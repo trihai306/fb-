@@ -6,7 +6,7 @@ import logo from '@src/assets/images/logo/logo.svg'
 //Template config options
 const themeConfig = {
   app: {
-    appName: 'Vuexy',
+    appName: 'Tool FB',
     appLogoImage: logo
   },
   layout: {
@@ -15,7 +15,7 @@ const themeConfig = {
     type: 'horizontal', // vertical, horizontal
     contentWidth: 'boxed', // full, boxed
     menu: {
-      isHidden: false,
+      isHidden: true,
       isCollapsed: false
     },
     navbar: {

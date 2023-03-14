@@ -1,6 +1,6 @@
 import {lazy} from "react"
 
-const UserList = lazy(() => import('../../views/apps/user/list'))
+const UserList = lazy(() => import('../../views/home/user/list'))
 const HomeRoutes = [
     {
         element: <UserList />,
