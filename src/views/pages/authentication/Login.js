@@ -165,7 +165,7 @@ const Login = () => {
               </g>
             </g>
           </svg>
-          <h2 className='brand-text text-primary ms-1'>Vuexy</h2>
+          <h2 className='brand-text text-primary ms-1'>TOOL FB</h2>
         </Link>
         <Col className='d-none d-lg-flex align-items-center p-5' lg='8' sm='12'>
           <div className='w-100 d-lg-flex align-items-center justify-content-center px-5'>
@@ -175,32 +175,10 @@ const Login = () => {
         <Col className='d-flex align-items-center auth-bg px-2 p-lg-5' lg='4' sm='12'>
           <Col className='px-xl-2 mx-auto' sm='8' md='6' lg='12'>
             <CardTitle tag='h2' className='fw-bold mb-1'>
-              Welcome to Vuexy! 👋
+              Welcome to TOOL FB! 👋
             </CardTitle>
-            <CardText className='mb-2'>Please sign-in to your account and start the adventure</CardText>
-            <Alert color='primary'>
-              <div className='alert-body font-small-2'>
-                <p>
-                  <small className='me-50'>
-                    <span className='fw-bold'>Admin:</span> admin@demo.com | admin
-                  </small>
-                </p>
-                <p>
-                  <small className='me-50'>
-                    <span className='fw-bold'>Client:</span> client@demo.com | client
-                  </small>
-                </p>
-              </div>
-              <HelpCircle
-                id='login-tip'
-                className='position-absolute'
-                size={18}
-                style={{ top: '10px', right: '10px' }}
-              />
-              <UncontrolledTooltip target='login-tip' placement='left'>
-                This is just for ACL demo purpose.
-              </UncontrolledTooltip>
-            </Alert>
+            <CardText className='mb-2'>Vui lòng đăng nhập để sử dụng dịch vụ</CardText>
+
             <Form className='auth-login-form mt-2' onSubmit={handleSubmit(onSubmit)}>
               <div className='mb-1'>
                 <Label className='form-label' for='login-email'>
@@ -228,7 +206,7 @@ const Login = () => {
                     Password
                   </Label>
                   <Link to='/forgot-password'>
-                    <small>Forgot Password?</small>
+                    <small>Quên mật khẩu?</small>
                   </Link>
                 </div>
                 <Controller
@@ -251,9 +229,9 @@ const Login = () => {
               </Button>
             </Form>
             <p className='text-center mt-2'>
-              <span className='me-25'>New on our platform?</span>
+              <span className='me-25'>Tạo tài khoản mới?</span>
               <Link to='/register'>
-                <span>Create an account</span>
+                <span>Tạo tài khoản</span>
               </Link>
             </p>
             <div className='divider my-2'>

@@ -176,7 +176,7 @@ const UsersList = () => {
                                         </Row>
                                     </CardText>
                                     <Button color='primary' outline>
-                                        Chạy tạo acc
+                                        Chạy nuôi acc
                                     </Button>
                                 </CardBody>
                             </Card>

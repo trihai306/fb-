@@ -27,9 +27,10 @@ const ProxyTable = ({ data }) => {
 
     return (
         <Fragment>
-            <div style={{ height: '400px', overflowY: 'scroll' }} className={"mb-4"}>
+            <div style={{ maxHeight: '500px', overflowY: 'scroll' }} className={"mb-4"}>
                 <DataTable
                     title="Proxy"
+                    subHeader
                     noHeader
                     defaultSortField="domain"
                     defaultSortAsc={false}

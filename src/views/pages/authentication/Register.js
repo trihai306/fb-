@@ -222,9 +222,9 @@ const Register = () => {
               </Button>
             </Form>
             <p className='text-center mt-2'>
-              <span className='me-25'>Already have an account?</span>
+              <span className='me-25'>Đã có tài khoản</span>
               <Link to='/login'>
-                <span>Sign in instead</span>
+                <span>Đăng nhập</span>
               </Link>
             </p>
             <div className='divider my-2'>
