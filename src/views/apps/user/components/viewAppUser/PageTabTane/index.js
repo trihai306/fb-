@@ -2,6 +2,7 @@ import { Fragment, useState } from "react"
 import { Col, Row, Nav, NavLink, NavItem, TabPane, TabContent  } from "reactstrap"
 import { Home, Settings, EyeOff, User } from 'react-feather'
 import ScanTabTane from "./ScanTabTane.js"
+import TableScan from "./table_scan.js"
 const tabs = [
   {
     title: "Quản lý",
@@ -53,22 +54,22 @@ const Page = () => {
     <Fragment>
       <Row>
         <Col xl="4" lg="5" xs={{ order: 1 }} md={{ order: 0, size: 5 }}>
-
+          <TableScan />
         </Col>
         <Col xl="8" lg="7" xs={{ order: 0 }} md={{ order: 1, size: 7 }}>
         <Nav tabs>
           {
               tabs?.map((item) => {
-                return <NavItem>
-                  <NavLink
-                      active={active === item.key}
-                      onClick={() => {
-                      toggle(item.key)
-                      }}
-                  >
-                      <Home className='font-medium-1 me-50' />
-                      <span className='align-middle font-small-3 w-bold'>{item.title}</span>
-                  </NavLink>
+                return <NavItem key={item.key}>
+                    <NavLink
+                        active={active === item.key}
+                        onClick={() => {
+                        toggle(item.key)
+                        }}
+                    >
+                        <Home className='font-medium-1 me-50' />
+                        <span className='align-middle font-small-3 w-bold'>{item.title}</span>
+                    </NavLink>
                   </NavItem>
               })
           }
@@ -76,7 +77,7 @@ const Page = () => {
         <TabContent className='py-50' activeTab={active}>
           {
               tabs?.map((item) => {
-                  return <TabPane tabId={item.key}>
+                  return <TabPane key={item.key} tabId={item.key}>
                       {item.components}
                   </TabPane>
               })

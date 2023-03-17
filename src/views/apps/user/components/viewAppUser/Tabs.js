@@ -75,7 +75,7 @@ const TabsIcons = () => {
       <Nav tabs>
         {
             headerTitles?.map((item) => {
-               return <NavItem>
+               return <NavItem key={item.key}>
                 <NavLink
                     active={active === item.key}
                     onClick={() => {
@@ -92,7 +92,7 @@ const TabsIcons = () => {
       <TabContent className='py-50' activeTab={active}>
         {
             headerTitles?.map((item) => {
-                return <TabPane tabId={item.key}>
+                return <TabPane key={item.key} tabId={item.key}>
                     {item.components}
                 </TabPane>
              })
