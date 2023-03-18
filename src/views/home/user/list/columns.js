@@ -25,7 +25,7 @@ const renderUser = row => {
             )}
             <div className='d-flex flex-column'>
                 <Link
-                    to={`/users/${row.id}`}
+                    to={`/apps/user/view/${row.id}`}
                     className='user_name text-truncate text-body'
                     onClick={() => store.dispatch(getUser(row.id))}
                 >
@@ -120,7 +120,7 @@ export const columns = [
                         <DropdownItem
                             tag={Link}
                             className='w-100'
-                            to={`/users/${row.id}`}
+                            to={`/apps/user/view/${row.id}`}
                             onClick={() => store.dispatch(getUser(row.id))}
                         >
                             <FileText size={14} className='me-50' />
