@@ -1,92 +1,107 @@
-import { Fragment, useState } from "react"
-import { Col, Row, Nav, NavLink, NavItem, TabPane, TabContent  } from "reactstrap"
-import { Home, Settings, EyeOff, User } from 'react-feather'
-import ScanTabTane from "./ScanTabTane.js"
-import TableScan from "./table_scan.js"
+import { Fragment, useState } from "react";
+import {
+  Col,
+  Row,
+  Nav,
+  NavLink,
+  NavItem,
+  TabPane,
+  TabContent,
+} from "reactstrap";
+import { Home, Settings, EyeOff, User } from "react-feather";
+import ScanTabTane from "./ScanTabTane.js";
+import MessTabTane from "./MessTabTane.js";
+import PostTabTane from "./PostTabTane.js";
+import ScanFileTabTane from "./ScanFileTabTane.js";
+import ScanUserTabTane from "./ScanUserTabTane.js";
 const tabs = [
   {
     title: "Quản lý",
     key: "manager",
-    components: <></>
+    components: <></>,
   },
   {
     title: "Quét UserId",
     key: "scanUserId",
-    components: <></>
+    components: <ScanUserTabTane />,
   },
   {
     title: "Dòng thời gian",
     key: "timeline",
-    components: <></>
+    components: <></>,
+  },
+  {
+    title: "Quét hồ sơ",
+    key: "scan_file",
+    components: <ScanFileTabTane />,
   },
   {
     title: "Đăng tường",
     key: "publish",
-    components: <></>
+    components: <PostTabTane />,
   },
   {
     title: "Nhắn tin",
     key: "sendMsg",
-    components: <></>
+    components: <MessTabTane />,
   },
   {
     title: "Bình luận",
     key: "comment",
-    components: <></>
+    components: <></>,
   },
   {
     title: "Quét thông tin",
     key: "scan",
-    components: <ScanTabTane />
-  }
-]
+    components: <ScanTabTane />,
+  },
+];
 
 const Page = () => {
-  const [active, setActive] = useState(tabs[6].key)
+  const [active, setActive] = useState(tabs[1].key);
 
-  const toggle = tab => {
+  const toggle = (tab) => {
     if (active !== tab) {
-      setActive(tab)
+      setActive(tab);
     }
-  }
-  
+  };
+
   return (
     <Fragment>
       <Row>
-        <Col xl="4" lg="5" xs={{ order: 1 }} md={{ order: 0, size: 5 }}>
-          <TableScan />
-        </Col>
-        <Col xl="8" lg="7" xs={{ order: 0 }} md={{ order: 1, size: 7 }}>
-        <Nav tabs>
-          {
-              tabs?.map((item) => {
-                return <NavItem key={item.key}>
-                    <NavLink
-                        active={active === item.key}
-                        onClick={() => {
-                        toggle(item.key)
-                        }}
-                    >
-                        <Home className='font-medium-1 me-50' />
-                        <span className='align-middle font-small-3 w-bold'>{item.title}</span>
-                    </NavLink>
-                  </NavItem>
-              })
-          }
-      </Nav>
-        <TabContent className='py-50' activeTab={active}>
-          {
-              tabs?.map((item) => {
-                  return <TabPane key={item.key} tabId={item.key}>
-                      {item.components}
-                  </TabPane>
-              })
-          }
-        </TabContent>
+        <Col xl="12" lg="12" md="12" xs="12">
+          <Nav tabs className="justify-content-end">
+            {tabs?.map((item) => {
+              return (
+                <NavItem key={item.key}>
+                  <NavLink
+                    active={active === item.key}
+                    onClick={() => {
+                      toggle(item.key);
+                    }}
+                  >
+                    <Home className="font-medium-1 me-50" />
+                    <span className="align-middle font-small-3 w-bold">
+                      {item.title}
+                    </span>
+                  </NavLink>
+                </NavItem>
+              );
+            })}
+          </Nav>
+          <TabContent className="py-50" activeTab={active}>
+            {tabs?.map((item) => {
+              return (
+                <TabPane key={item.key} tabId={item.key}>
+                  {item.components}
+                </TabPane>
+              );
+            })}
+          </TabContent>
         </Col>
       </Row>
     </Fragment>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;
