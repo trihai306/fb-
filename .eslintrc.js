@@ -5,6 +5,11 @@ module.exports = {
     es6: true,
     browser: true
   },
+  extends: [
+    'eslint:recommended',
+    'plugin:import/errors',
+    'plugin:import/warnings'
+  ],
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',
@@ -18,6 +23,8 @@ module.exports = {
       presets: ['@babel/react']
     }
   },
+  plugins: ['import'],
+
   rules: {
     'no-console': 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
@@ -41,8 +48,8 @@ module.exports = {
     'array-bracket-spacing': 'error',
     'brace-style': ['error', '1tbs', { allowSingleLine: true }],
     'block-spacing': 'error',
-    'comma-dangle': 'error',
-    'comma-spacing': 'error',
+    // 'comma-dangle': 'error',
+    // 'comma-spacing': 'error',
     'comma-style': 'error',
     'computed-property-spacing': 'error',
     'func-call-spacing': 'error',
@@ -60,8 +67,8 @@ module.exports = {
     'object-property-newline': ['error', { allowAllPropertiesOnSameLine: true }],
     'quote-props': ['error', 'as-needed'],
     // quotes: ['error', 'prefer-single'],
-    semi: ['error', 'never'],
-    'semi-spacing': 'error',
+    // semi: ['error', 'never'],
+    // 'semi-spacing': 'error',
     'space-before-blocks': 'error',
     // 'space-before-function-paren': 'error',
     'space-in-parens': 'error',
@@ -75,7 +82,20 @@ module.exports = {
     'no-var': 'error',
     'object-shorthand': 'error',
     'prefer-const': 'error',
-    'prefer-template': 'error'
+    'prefer-template': 'error',
+    // 'import/no-unresolved': 'error',
+    'import/named': 'error',
+    'import/namespace': 'error',
+    'import/default': 'error',
+    'import/export': 'error',
+    'no-undef': 'error'
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx']
+      }
+    }
   }
 
   // rules: {

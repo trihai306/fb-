@@ -1,24 +1,32 @@
 // ** React Imports
-import { Fragment, useState, useEffect } from 'react'
-
+import { Fragment, useState, useEffect } from "react";
+import * as XLSX from "xlsx";
 // ** Invoice List Sidebar
-import Sidebar from './Sidebar'
+import Sidebar from "./Sidebar";
 
 // ** Table Columns
-import { columns } from './columns'
+import { columns } from "./columns";
 
 // ** Store & Actions
-import { getAllData, getData } from '../store'
-import { useDispatch, useSelector } from 'react-redux'
+import { getAllData, getData } from "../store";
+import { useDispatch, useSelector } from "react-redux";
 
 // ** Third Party Components
-import Select from 'react-select'
-import ReactPaginate from 'react-paginate'
-import DataTable from 'react-data-table-component'
-import { ChevronDown, Share, Printer, FileText, File, Grid, Copy } from 'react-feather'
+import Select from "react-select";
+import ReactPaginate from "react-paginate";
+import DataTable from "react-data-table-component";
+import {
+  ChevronDown,
+  Share,
+  Printer,
+  FileText,
+  File,
+  Grid,
+  Copy,
+} from "react-feather";
 
 // ** Utils
-import { selectThemeColors } from '@utils'
+import { selectThemeColors } from "@utils";
 
 // ** Reactstrap Imports
 import {
@@ -34,156 +42,175 @@ import {
   DropdownMenu,
   DropdownItem,
   DropdownToggle,
-  UncontrolledDropdown
-} from 'reactstrap'
+  UncontrolledDropdown,
+} from "reactstrap";
 
 // ** Styles
-import '@styles/react/libs/react-select/_react-select.scss'
-import '@styles/react/libs/tables/react-dataTable-component.scss'
+import "@styles/react/libs/react-select/_react-select.scss";
+import "@styles/react/libs/tables/react-dataTable-component.scss";
+import { import_excel } from "@views/apps/user/store/index.js";
 
 // ** Table Header
-const CustomHeader = ({ store, toggleSidebar, handlePerPage, rowsPerPage, handleFilter, searchTerm }) => {
+const CustomHeader = ({
+  store,
+  toggleSidebar,
+  handlePerPage,
+  rowsPerPage,
+  handleFilter,
+  searchTerm,
+}) => {
   // ** Converts table to CSV
   function convertArrayOfObjectsToCSV(array) {
-    let result
+    let result;
 
-    const columnDelimiter = ','
-    const lineDelimiter = '\n'
-    const keys = Object.keys(store.data[0])
+    const columnDelimiter = ",";
+    const lineDelimiter = "\n";
+    const keys = Object.keys(store.data[0]);
 
-    result = ''
-    result += keys.join(columnDelimiter)
-    result += lineDelimiter
+    result = "";
+    result += keys.join(columnDelimiter);
+    result += lineDelimiter;
 
-    array.forEach(item => {
-      let ctr = 0
-      keys.forEach(key => {
-        if (ctr > 0) result += columnDelimiter
+    array.forEach((item) => {
+      let ctr = 0;
+      keys.forEach((key) => {
+        if (ctr > 0) result += columnDelimiter;
 
-        result += item[key]
+        result += item[key];
 
-        ctr++
-      })
-      result += lineDelimiter
-    })
+        ctr++;
+      });
+      result += lineDelimiter;
+    });
 
-    return result
+    return result;
   }
 
   // ** Downloads CSV
   function downloadCSV(array) {
-    const link = document.createElement('a')
-    let csv = convertArrayOfObjectsToCSV(array)
-    if (csv === null) return
+    const link = document.createElement("a");
+    let csv = convertArrayOfObjectsToCSV(array);
+    if (csv === null) return;
 
-    const filename = 'export.csv'
+    const filename = "export.csv";
 
     if (!csv.match(/^data:text\/csv/i)) {
-      csv = `data:text/csv;charset=utf-8,${csv}`
+      csv = `data:text/csv;charset=utf-8,${csv}`;
     }
 
-    link.setAttribute('href', encodeURI(csv))
-    link.setAttribute('download', filename)
-    link.click()
+    link.setAttribute("href", encodeURI(csv));
+    link.setAttribute("download", filename);
+    link.click();
   }
   return (
-    <div className='invoice-list-table-header w-100 me-1 ms-50 mt-2 mb-75'>
+    <div className="invoice-list-table-header w-100 me-1 ms-50 mt-2 mb-75">
       <Row>
-        <Col xl='6' className='d-flex align-items-center p-0'>
-          <div className='d-flex align-items-center w-100'>
-            <label htmlFor='rows-per-page'>Show</label>
+        <Col xl="6" className="d-flex align-items-center p-0">
+          <div className="d-flex align-items-center w-100">
+            <label htmlFor="rows-per-page">Show</label>
             <Input
-              className='mx-50'
-              type='select'
-              id='rows-per-page'
+              className="mx-50"
+              type="select"
+              id="rows-per-page"
               value={rowsPerPage}
               onChange={handlePerPage}
-              style={{ width: '5rem' }}
+              style={{ width: "5rem" }}
             >
-              <option value='10'>10</option>
-              <option value='25'>25</option>
-              <option value='50'>50</option>
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
             </Input>
-            <label htmlFor='rows-per-page'>Entries</label>
+            <label htmlFor="rows-per-page">Entries</label>
           </div>
         </Col>
         <Col
-          xl='6'
-          className='d-flex align-items-sm-center justify-content-xl-end justify-content-start flex-xl-nowrap flex-wrap flex-sm-row flex-column pe-xl-1 p-0 mt-xl-0 mt-1'
+          xl="6"
+          className="d-flex align-items-sm-center justify-content-xl-end justify-content-start flex-xl-nowrap flex-wrap flex-sm-row flex-column pe-xl-1 p-0 mt-xl-0 mt-1"
         >
-          <div className='d-flex align-items-center mb-sm-0 mb-1 me-1'>
-            <label className='mb-0' htmlFor='search-invoice'>
+          <div className="d-flex align-items-center mb-sm-0 mb-1 me-1">
+            <label className="mb-0" htmlFor="search-invoice">
               Search:
             </label>
             <Input
-              id='search-invoice'
-              className='ms-50 w-100'
-              type='text'
+              id="search-invoice"
+              className="ms-50 w-100"
+              type="text"
               value={searchTerm}
-              onChange={e => handleFilter(e.target.value)}
+              onChange={(e) => handleFilter(e.target.value)}
             />
           </div>
 
-          <div className='d-flex align-items-center table-header-actions'>
-            <UncontrolledDropdown className='me-1'>
-              <DropdownToggle color='secondary' caret outline>
-                <Share className='font-small-4 me-50' />
-                <span className='align-middle'>Export</span>
+          <div className="d-flex align-items-center table-header-actions">
+            <UncontrolledDropdown className="me-1">
+              <DropdownToggle color="secondary" caret outline>
+                <Share className="font-small-4 me-50" />
+                <span className="align-middle">Export</span>
               </DropdownToggle>
               <DropdownMenu>
-                <DropdownItem className='w-100'>
-                  <Printer className='font-small-4 me-50' />
-                  <span className='align-middle'>Print</span>
+                <DropdownItem className="w-100">
+                  <Printer className="font-small-4 me-50" />
+                  <span className="align-middle">Print</span>
                 </DropdownItem>
-                <DropdownItem className='w-100' onClick={() => downloadCSV(store.data)}>
-                  <FileText className='font-small-4 me-50' />
-                  <span className='align-middle'>CSV</span>
+                <DropdownItem
+                  className="w-100"
+                  onClick={() => downloadCSV(store.data)}
+                >
+                  <FileText className="font-small-4 me-50" />
+                  <span className="align-middle">CSV</span>
                 </DropdownItem>
-                <DropdownItem className='w-100'>
-                  <Grid className='font-small-4 me-50' />
-                  <span className='align-middle'>Excel</span>
+                <DropdownItem className="w-100">
+                  <Grid className="font-small-4 me-50" />
+                  <span className="align-middle">Excel</span>
                 </DropdownItem>
-                <DropdownItem className='w-100'>
-                  <File className='font-small-4 me-50' />
-                  <span className='align-middle'>PDF</span>
+                <DropdownItem className="w-100">
+                  <File className="font-small-4 me-50" />
+                  <span className="align-middle">PDF</span>
                 </DropdownItem>
-                <DropdownItem className='w-100'>
-                  <Copy className='font-small-4 me-50' />
-                  <span className='align-middle'>Copy</span>
+                <DropdownItem className="w-100">
+                  <Copy className="font-small-4 me-50" />
+                  <span className="align-middle">Copy</span>
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
 
-            <Button className='add-new-user' color='primary' onClick={toggleSidebar}>
+            <Button
+              className="add-new-user"
+              color="primary"
+              onClick={toggleSidebar}
+            >
               Add New User
             </Button>
           </div>
         </Col>
       </Row>
     </div>
-  )
-}
+  );
+};
 
 const UsersList = () => {
   // ** Store Vars
-  const dispatch = useDispatch()
-  const store = useSelector(state => state.users)
+  const dispatch = useDispatch();
+  const store = useSelector((state) => state.users);
 
   // ** States
-  const [sort, setSort] = useState('desc')
-  const [searchTerm, setSearchTerm] = useState('')
-  const [currentPage, setCurrentPage] = useState(1)
-  const [sortColumn, setSortColumn] = useState('id')
-  const [rowsPerPage, setRowsPerPage] = useState(10)
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [currentStatus, setCurrentStatus] = useState({ value: '', label: 'Select Status', number: 0 })
+  const [sort, setSort] = useState("desc");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortColumn, setSortColumn] = useState("id");
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState({
+    value: "",
+    label: "Select Status",
+    number: 0,
+  });
 
   // ** Function to toggle sidebar
-  const toggleSidebar = () => setSidebarOpen(!sidebarOpen)
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   // ** Get data on mount
   useEffect(() => {
-    dispatch(getAllData())
+    dispatch(getAllData());
     dispatch(
       getData({
         sort,
@@ -193,12 +220,12 @@ const UsersList = () => {
         perPage: rowsPerPage,
         status: currentStatus.value,
       })
-    )
-  }, [dispatch, store.data.length, sort, sortColumn, currentPage])
-
+    );
+  }, [dispatch, sort, sortColumn, currentPage]);
+  //store.data.length
 
   // ** Function in get data on page change
-  const handlePagination = page => {
+  const handlePagination = (page) => {
     dispatch(
       getData({
         sort,
@@ -208,13 +235,13 @@ const UsersList = () => {
         page: page.selected + 1,
         status: currentStatus.value,
       })
-    )
-    setCurrentPage(page.selected + 1)
-  }
+    );
+    setCurrentPage(page.selected + 1);
+  };
 
   // ** Function in get data on rows per page
-  const handlePerPage = e => {
-    const value = parseInt(e.currentTarget.value)
+  const handlePerPage = (e) => {
+    const value = parseInt(e.currentTarget.value);
     dispatch(
       getData({
         sort,
@@ -222,15 +249,15 @@ const UsersList = () => {
         q: searchTerm,
         perPage: value,
         page: currentPage,
-        status: currentStatus.value
+        status: currentStatus.value,
       })
-    )
-    setRowsPerPage(value)
-  }
+    );
+    setRowsPerPage(value);
+  };
 
   // ** Function in get data on search query change
-  const handleFilter = val => {
-    setSearchTerm(val)
+  const handleFilter = (val) => {
+    setSearchTerm(val);
     dispatch(
       getData({
         sort,
@@ -240,55 +267,59 @@ const UsersList = () => {
         perPage: rowsPerPage,
         status: currentStatus.value,
       })
-    )
-  }
+    );
+  };
 
   // ** Custom Pagination
   const CustomPagination = () => {
-    const count = Number(Math.ceil(store.total / rowsPerPage))
+    const count = Number(Math.ceil(store.total / rowsPerPage));
 
     return (
       <ReactPaginate
-        previousLabel={''}
-        nextLabel={''}
+        previousLabel={""}
+        nextLabel={""}
         pageCount={count || 1}
-        activeClassName='active'
+        activeClassName="active"
         forcePage={currentPage !== 0 ? currentPage - 1 : 0}
-        onPageChange={page => handlePagination(page)}
-        pageClassName={'page-item'}
-        nextLinkClassName={'page-link'}
-        nextClassName={'page-item next'}
-        previousClassName={'page-item prev'}
-        previousLinkClassName={'page-link'}
-        pageLinkClassName={'page-link'}
-        containerClassName={'pagination react-paginate justify-content-end my-2 pe-1'}
+        onPageChange={(page) => handlePagination(page)}
+        pageClassName={"page-item"}
+        nextLinkClassName={"page-link"}
+        nextClassName={"page-item next"}
+        previousClassName={"page-item prev"}
+        previousLinkClassName={"page-link"}
+        pageLinkClassName={"page-link"}
+        containerClassName={
+          "pagination react-paginate justify-content-end my-2 pe-1"
+        }
       />
-    )
-  }
+    );
+  };
 
   // ** Table data to render
   const dataToRender = () => {
     const filters = {
       status: currentStatus.value,
-      q: searchTerm
-    }
+      q: searchTerm,
+    };
 
     const isFiltered = Object.keys(filters).some(function (k) {
-      return filters[k].length > 0
-    })
+      return filters[k].length > 0;
+    });
 
     if (store.data.length > 0) {
-      return store.data
+      console.log(store.data);
+      return store.data;
     } else if (store.data.length === 0 && isFiltered) {
-      return []
+      return [];
     } else {
-      return store.allData.slice(0, rowsPerPage)
+      console.log(store.allData);
+      return store.allData.slice(0, rowsPerPage);
     }
-  }
+  };
 
   const handleSort = (column, sortDirection) => {
-    setSort(sortDirection)
-    setSortColumn(column.sortField)
+    setSort(sortDirection);
+    setSortColumn(column.sortField);
     dispatch(
       getData({
         sort,
@@ -298,38 +329,58 @@ const UsersList = () => {
         perPage: rowsPerPage,
         status: currentStatus.value,
       })
-    )
-  }
+    );
+  };
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const workbook = XLSX.read(event.target.result, { type: "binary" });
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+      const data = XLSX.utils.sheet_to_json(worksheet);
+      // console.log(data);
+      dispatch(import_excel(data));
+    };
+    reader.readAsBinaryString(file);
+  };
+
+  // useEffect(() => {
+  //   console.log("store data:", store.data);
+  // }, [store.data]);
 
   return (
     <Fragment>
       <Card>
         <CardHeader>
-          <CardTitle tag='h4'>Công cụ</CardTitle>
+          <CardTitle tag="h4">Công cụ</CardTitle>
         </CardHeader>
         <CardBody>
           <Row>
-              <Col md='2' sm='12'>
-                  <Label className='form-label' for='inputFileUser'>
-                      upload tài khoản user
-                  </Label>
-                  <Input type='file' id='inputFileUser' name='fileInput' />
-              </Col>
-              <Col md='2' sm='12'>
-                  <Label className='form-label' for='inputFileUser'>
-                     Upload proxy
-                  </Label>
-                  <Input type='file' id='inputFileUser' name='fileInput' />
-              </Col>
-              <Col md={8}>
-
-              </Col>
+            <Col md="2" sm="12">
+              <Label className="form-label" for="inputFileUser">
+                upload tài khoản user
+              </Label>
+              <Input
+                onChange={handleFileUpload}
+                type="file"
+                id="inputFileUser"
+                name="fileInput"
+              />
+            </Col>
+            <Col md="2" sm="12">
+              <Label className="form-label" for="inputFileUser">
+                Upload proxy
+              </Label>
+              <Input type="file" id="inputFileUser" name="fileInput" />
+            </Col>
+            <Col md={8}></Col>
           </Row>
         </CardBody>
       </Card>
 
-      <Card className='overflow-hidden'>
-        <div className='react-dataTable'>
+      <Card className="overflow-hidden">
+        <div className="react-dataTable">
           <DataTable
             noHeader
             subHeader
@@ -340,9 +391,9 @@ const UsersList = () => {
             columns={columns}
             onSort={handleSort}
             sortIcon={<ChevronDown />}
-            className='react-dataTable'
+            className="react-dataTable"
             paginationComponent={CustomPagination}
-            data={dataToRender()}
+            data={store.data}
             subHeaderComponent={
               <CustomHeader
                 store={store}
@@ -359,7 +410,7 @@ const UsersList = () => {
 
       <Sidebar open={sidebarOpen} toggleSidebar={toggleSidebar} />
     </Fragment>
-  )
-}
+  );
+};
 
-export default UsersList
+export default UsersList;

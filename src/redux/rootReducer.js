@@ -13,6 +13,7 @@ import ecommerce from '@src/views/apps/ecommerce/store'
 import dataTables from '@src/views/tables/data-tables/store'
 import permissions from '@src/views/apps/roles-permissions/store'
 
+
 const rootReducer = {
   auth,
   todo,
