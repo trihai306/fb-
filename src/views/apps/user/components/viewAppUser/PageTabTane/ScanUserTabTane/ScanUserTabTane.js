@@ -4,6 +4,7 @@ import { Fragment } from "react";
 import { Row, Col, Label, Button, Input, Progress } from "reactstrap";
 import FriendsTbl from "../../tables/FriendsTbl.js";
 import "flatpickr/dist/themes/material_green.css";
+import Flatpickr from "react-flatpickr";
 import Select from "react-select";
 import "./styles.scss";
 const selectOptions = [
@@ -16,7 +17,7 @@ const selectOptions = [
 
 const ScanUserTabTane = () => {
   return (
-    <Fragment>
+    <Fragment className="page_scan-user__tab">
       <Row>
         <Col md="5" xs="12">
           <FriendsTbl />
@@ -69,19 +70,65 @@ const ScanUserTabTane = () => {
                   />
                 </Col>
               </Row>
-              <Row>
+              <Row className="mt-1">
                 <Label md="5">Độ tuổi</Label>
                 <Col md="7">
                   <div className="d-flex justify-content-center gap-1 align-items-center">
-                    <Label>Lớn hơn</Label>
+                    <Label className="w-100 ">Lớn hơn</Label>
                     <Input type="number" bsSize="sm" />
-                    <Label>tuổi</Label>
+                    <Label className="w-100">tuổi</Label>
                   </div>
                   <div className="d-flex justify-content-center gap-1 align-items-center">
-                    <Label>Nhỏ hơn</Label>
+                    <Label className="w-100">Nhỏ hơn</Label>
                     <Input type="number" bsSize="sm" />
-                    <Label>tuổi</Label>
+                    <Label className="w-100">tuổi</Label>
                   </div>
+                </Col>
+              </Row>
+              <Row className="mt-1">
+                <Label md="5">Nơi sống</Label>
+                <Col md="7">
+                  <Input type="text" />
+                </Col>
+              </Row>
+              <Row>
+                <Label md="5">Quê quán</Label>
+                <Col md="7">
+                  <Input type="text" />
+                </Col>
+              </Row>
+              <Row>
+                <Label md="5">Nơi làm việc</Label>
+                <Col md="7">
+                  <Input type="text" />
+                </Col>
+              </Row>
+              <Row>
+                <Label md="5">Nghề nghiệp</Label>
+                <Col>
+                  <Input type="text" />
+                </Col>
+              </Row>
+              <Row>
+                <Label md="5">Ngày sinh</Label>
+                <Col md="7">
+                  <Flatpickr
+                    options={{}}
+                    data-enable-time
+                    dateFormat="DD/MM/YYYY"
+                    className="form-control"
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Label md="5">Tháng sinh</Label>
+                <Col md="7">
+                  <Flatpickr
+                    dateFormat="MM"
+                    options={{}}
+                    data-enable-time
+                    className="form-control"
+                  />
                 </Col>
               </Row>
             </Col>
