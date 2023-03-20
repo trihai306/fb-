@@ -13,7 +13,7 @@ import ScanTabTane from "./ScanTabTane.js";
 import MessTabTane from "./MessTabTane.js";
 import PostTabTane from "./PostTabTane.js";
 import ScanFileTabTane from "./ScanFileTabTane.js";
-import ScanUserTabTane from "./ScanUserTabTane.js";
+import ScanUserTabTane from "./ScanUserTabTane/ScanUserTabTane.js";
 const tabs = [
   {
     title: "Quản lý",
