@@ -6,7 +6,7 @@ import FriendsTbl from "../tables/FriendsTbl.js";
 import "flatpickr/dist/themes/material_green.css";
 import Options from "../forms/Options.js";
 import PageTbl from "../tables/PageTbl.js";
-
+import { v4 as uuidv4 } from 'uuid';
 const optionsCheck = [
   {
     title: "Email",
@@ -89,7 +89,7 @@ const ScanFileTabTane = () => {
               </Label>
               <Row>
                 {optionsCheck.map((option) => (
-                  <Col md="6" xs="6">
+                  <Col md="6" xs="6" key={uuidv4()}>
                     <div className="form-check">
                       <Input type="checkbox" />
                       <Label className="w-100">{option.title}</Label>
