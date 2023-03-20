@@ -111,7 +111,7 @@ export const columns = [
                         <DropdownItem
                             tag={Link}
                             className='w-100'
-                            to={`/users/${row.id}`}
+                            to={`/apps/user/view/${row.id}`}
                             onClick={() => store.dispatch(getUser(row.id))}
                         >
                             <Play size={14} className='me-50' />
