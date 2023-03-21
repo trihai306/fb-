@@ -14,11 +14,13 @@ import MessTabTane from "./MessTabTane.js";
 import PostTabTane from "./PostTabTane.js";
 import ScanFileTabTane from "./ScanFileTabTane.js";
 import ScanUserTabTane from "./ScanUserTabTane/ScanUserTabTane.js";
+import TimelineTabTane from "./TimelineTabTane/index.js";
+import ManageTabTane from "./ManageTabTane/index.js";
 const tabs = [
   {
     title: "Quản lý",
     key: "manager",
-    components: <></>,
+    components: <ManageTabTane />,
   },
   {
     title: "Quét UserId",
@@ -28,7 +30,7 @@ const tabs = [
   {
     title: "Dòng thời gian",
     key: "timeline",
-    components: <></>,
+    components: <TimelineTabTane />,
   },
   {
     title: "Quét hồ sơ",
@@ -58,7 +60,7 @@ const tabs = [
 ];
 
 const Page = () => {
-  const [active, setActive] = useState(tabs[1].key);
+  const [active, setActive] = useState(tabs[0].key);
 
   const toggle = (tab) => {
     if (active !== tab) {
