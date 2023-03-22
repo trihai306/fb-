@@ -1,2 +1,9 @@
-@import '../node_modules/prismjs/themes/prism-tomorrow';
-@import './assets/scss/app.scss';
+@import "../node_modules/prismjs/themes/prism-tomorrow";
+@import "./assets/scss/app.scss";
+
+.d-flex-wrap-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
