@@ -16,6 +16,8 @@ import ScanFileTabTane from "./ScanFileTabTane.js";
 import ScanUserTabTane from "./ScanUserTabTane/ScanUserTabTane.js";
 import TimelineTabTane from "./TimelineTabTane/index.js";
 import ManageTabTane from "./ManageTabTane/index.js";
+import SendMessage from "../../SendMessage/index.js";
+import CrossInteraction from "../../CrossInteraction/index.js";
 const tabs = [
   {
     title: "Quản lý",
@@ -53,6 +55,17 @@ const tabs = [
     components: <></>,
   },
   {
+    title: "Tương tác chéo",
+    key: "crossInteraction",
+    components: <CrossInteraction />,
+  },
+  {
+    title: "Soạn tin",
+    key: "sendMessage",
+    components: <SendMessage />,
+  },
+
+  {
     title: "Quét thông tin",
     key: "scan",
     components: <ScanTabTane />,
@@ -60,7 +73,7 @@ const tabs = [
 ];
 
 const Page = () => {
-  const [active, setActive] = useState(tabs[0].key);
+  const [active, setActive] = useState(tabs[6].key);
 
   const toggle = (tab) => {
     if (active !== tab) {
