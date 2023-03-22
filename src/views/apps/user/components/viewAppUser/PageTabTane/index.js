@@ -52,8 +52,19 @@ const tabs = [
   {
     title: "Bình luận",
     key: "comment",
+    components: <></>,
+  },
+  {
+    title: "Tương tác chéo",
+    key: "crossInteraction",
     components: <CrossInteraction />,
   },
+  {
+    title: "Soạn tin",
+    key: "sendMessage",
+    components: <SendMessage />,
+  },
+
   {
     title: "Quét thông tin",
     key: "scan",
