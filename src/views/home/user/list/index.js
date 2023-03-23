@@ -11,154 +11,38 @@ import StatsHorizontal from '@components/widgets/stats/StatsHorizontal'
 import {User, UserPlus, UserCheck, UserX} from 'react-feather'
 
 // ** Styles
+// eslint-disable-next-line import/no-unresolved
 import '@styles/react/apps/app-users.scss'
 import ProxyTable from "./TableProxy"
-import {spinnerTextAlignment} from "../../../components/spinners/SpinnerSourceCode";
-import SpinnerTextAlignment from "../../../components/spinners/SpinnerTextAlignment";
+import {useState} from "react";
+
 
 const UsersList = () => {
-    const proxyData = [
-        {
-            domain: 'example.com',
-            port: 8080,
-            username: 'myuser',
-            password: 'mypassword'
-        },
-        {
-            domain: 'example.com',
-            port: 8080,
-            username: 'myuser',
-            password: 'mypassword'
-        },
-        {
-            domain: 'example.com',
-            port: 8080,
-            username: 'myuser',
-            password: 'mypassword'
-        },
-        {
-            domain: 'example.com',
-            port: 8080,
-            username: 'myuser',
-            password: 'mypassword'
-        },
-        {
-            domain: 'example.com',
-            port: 8080,
-            username: 'myuser',
-            password: 'mypassword'
-        },
-        {
-            domain: 'example.com',
-            port: 8080,
-            username: 'myuser',
-            password: 'mypassword'
-        },
-        {
-            domain: 'example.com',
-            port: 8080,
-            username: 'myuser',
-            password: 'mypassword'
-        },
-        {
-            domain: 'example.com',
-            port: 8080,
-            username: 'myuser',
-            password: 'mypassword'
-        },
-        {
-            domain: 'example.com',
-            port: 8080,
-            username: 'myuser',
-            password: 'mypassword'
-        },
-        {
-            domain: 'example.com',
-            port: 8080,
-            username: 'myuser',
-            password: 'mypassword'
-        },
-        {
-            domain: 'example.com',
-            port: 8080,
-            username: 'myuser',
-            password: 'mypassword'
-        },
-        {
-            domain: 'example.com',
-            port: 8080,
-            username: 'myuser',
-            password: 'mypassword'
-        },
-        {
-            domain: 'example.com',
-            port: 8080,
-            username: 'myuser',
-            password: 'mypassword'
-        },
-        {
-            domain: 'example.com',
-            port: 8080,
-            username: 'myuser',
-            password: 'mypassword'
-        },
-        {
-            domain: 'example.com',
-            port: 8080,
-            username: 'myuser',
-            password: 'mypassword'
-        },
-        {
-            domain: 'example.com',
-            port: 8080,
-            username: 'myuser',
-            password: 'mypassword'
-        },
-        {
-            domain: 'example.com',
-            port: 8080,
-            username: 'myuser',
-            password: 'mypassword'
-        }
-        // other proxy objects
-    ]
+    const [proxyData, setProxyData] = useState([]);
+    const [statsData, setStartsData] = useState([
+        { color: 'primary', title: 'Tổng tài khoản', icon: <User size={20}/>, stat: '21,459' },
+        { color: 'danger', title: 'Thêm mới', icon: <UserPlus size={20}/>, stat: '4,567' },
+        { color: 'success', title: 'Đang hoạt động', icon: <UserCheck size={20}/>, stat: '19,860' },
+        { color: 'warning', title: 'Bị khoá', icon: <UserX size={20}/>, stat: '237' }
+    ]);
     return (
         <div className='app-user-list'>
             <Row>
                 <Col md={6}>
                     <Row>
-                        <Col lg='6' sm='6'>
-                            <StatsHorizontal
-                                color='primary'
-                                statTitle='Tổng tài khoản'
-                                icon={<User size={20}/>}
-                                renderStats={<h3 className='fw-bolder mb-75'>21,459</h3>}
-                            />
-                        </Col>
-                        <Col lg='6' sm='6'>
-                            <StatsHorizontal
-                                color='danger'
-                                statTitle='Thêm mới'
-                                icon={<UserPlus size={20}/>}
-                                renderStats={<h3 className='fw-bolder mb-75'>4,567</h3>}
-                            />
-                        </Col>
-                        <Col lg='6' sm='6'>
-                            <StatsHorizontal
-                                color='success'
-                                statTitle='Đang hoạt động'
-                                icon={<UserCheck size={20}/>}
-                                renderStats={<h3 className='fw-bolder mb-75'>19,860</h3>}
-                            />
-                        </Col>
-                        <Col lg='6' sm='6'>
-                            <StatsHorizontal
-                                color='warning'
-                                statTitle='Bị khoá'
-                                icon={<UserX size={20}/>}
-                                renderStats={<h3 className='fw-bolder mb-75'>237</h3>}
-                            />
-                        </Col>
+                        {statsData.map((stat) => (
+                            <Col lg='6' sm='6'>
+                                <StatsHorizontal
+                                    color={stat.color}
+                                    statTitle={stat.title}
+                                    icon={stat.icon}
+                                    renderStats={<h3 className='fw-bolder mb-75'>{stat.stat}</h3>}
+                                />
+                            </Col>
+                        ))}
+
+                    </Row>
+                    <Row>
                         <Col lg="12">
                             <Card>
                                 <CardBody>

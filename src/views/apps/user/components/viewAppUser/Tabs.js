@@ -7,6 +7,8 @@ import { Home, Settings, EyeOff, User } from 'react-feather'
 // ** Reactstrap Imports
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 import Page from './PageTabTane/index.js'
+// eslint-disable-next-line import/no-unresolved
+import Profile from "@views/apps/user/components/viewAppUser/Profile";
 
 
 const headerTitles = [
@@ -14,7 +16,7 @@ const headerTitles = [
         title: "Cá nhân",
         key: "persional",
         components: <>
-            <h1>Hello worlds</h1>
+            <Profile></Profile>
         </>
     },
     {
@@ -62,7 +64,7 @@ const headerTitles = [
 
 const TabsIcons = () => {
   // ** State
-  const [active, setActive] = useState(headerTitles[3].key)
+  const [active, setActive] = useState(headerTitles[0].key)
 
   const toggle = tab => {
     if (active !== tab) {

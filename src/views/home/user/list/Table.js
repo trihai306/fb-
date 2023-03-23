@@ -10,9 +10,6 @@ import { columns } from "./columns";
 // ** Store & Actions
 import { getAllData, getData } from "../store";
 import { useDispatch, useSelector } from "react-redux";
-
-// ** Third Party Components
-import Select from "react-select";
 import ReactPaginate from "react-paginate";
 import DataTable from "react-data-table-component";
 import {
@@ -20,13 +17,10 @@ import {
   Share,
   Printer,
   FileText,
-  File,
   Grid,
-  Copy,
 } from "react-feather";
 
 // ** Utils
-import { selectThemeColors } from "@utils";
 
 // ** Reactstrap Imports
 import {
@@ -161,14 +155,6 @@ const CustomHeader = ({
                 <DropdownItem className="w-100">
                   <Grid className="font-small-4 me-50" />
                   <span className="align-middle">Excel</span>
-                </DropdownItem>
-                <DropdownItem className="w-100">
-                  <File className="font-small-4 me-50" />
-                  <span className="align-middle">PDF</span>
-                </DropdownItem>
-                <DropdownItem className="w-100">
-                  <Copy className="font-small-4 me-50" />
-                  <span className="align-middle">Copy</span>
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
