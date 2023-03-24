@@ -40,8 +40,11 @@ import {
 } from "reactstrap";
 
 // ** Styles
+// eslint-disable-next-line import/no-unresolved
 import "@styles/react/libs/react-select/_react-select.scss";
+// eslint-disable-next-line import/no-unresolved
 import "@styles/react/libs/tables/react-dataTable-component.scss";
+// eslint-disable-next-line import/no-unresolved
 import { import_excel } from "@views/apps/user/store/index.js";
 
 // ** Table Header
@@ -293,7 +296,6 @@ const UsersList = () => {
     });
 
     if (store.data.length > 0) {
-      console.log(store.data);
       return store.data;
     } else if (store.data.length === 0 && isFiltered) {
       return [];

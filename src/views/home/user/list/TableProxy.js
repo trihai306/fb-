@@ -1,5 +1,6 @@
 import { Fragment } from 'react'
 import DataTable from 'react-data-table-component'
+import BaseTable from "../../../../base/table";
 
 const ProxyTable = ({ data }) => {
     const columns = [
@@ -24,23 +25,14 @@ const ProxyTable = ({ data }) => {
             sortable: false
         }
     ]
-
     return (
         <Fragment>
-            <div style={{ maxHeight: '500px', overflowY: 'scroll' }} className={"mb-4"}>
-                <DataTable
-                    title="Proxy"
-                    subHeader
-                    noHeader
-                    defaultSortField="domain"
-                    defaultSortAsc={false}
-                    pagination={false}
-                    highlightOnHover
-                    striped
-                    className='react-dataTable'
-                    data={data}
-                    columns={columns}
-                />
+            <div style={{ maxHeight: '500px' }} className={"mb-4"}>
+             <BaseTable
+             columns={columns}
+             title={"Proxy"}
+             link={"/proxy"}
+             ></BaseTable>
             </div>
         </Fragment>
     )
