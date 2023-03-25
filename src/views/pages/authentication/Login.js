@@ -86,7 +86,7 @@ const Login = () => {
         if (Object.values(data).every(field => field.length > 0)) {
             login(data.loginEmail, data.password)
                 .then(res => {
-                    const data = { ...res.userData, accessToken: res.accessToken.plainTextToken }
+                    const data = { ...res.userData, accessToken: res.accessToken.plainTextToken, ability: res.ability }
                     console.log(data)
                     dispatch(handleLogin(data))
                     ability.update(res.ability)
