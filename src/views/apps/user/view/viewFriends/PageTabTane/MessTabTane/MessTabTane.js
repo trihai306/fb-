@@ -2,13 +2,15 @@
 /* eslint-disable no-tabs */
 import { Fragment } from "react";
 import { Row, Col, Label, Button, Input, Progress } from "reactstrap";
-import FriendsTbl from "../tables/FriendsTbl.js";
+
 import Select from "react-select";
 import { selectThemeColors } from "@utils";
 import Flatpickr from "react-flatpickr";
 import PickerDateTime from "@views/forms/form-elements/datepicker/PickerDateTime.js";
 import "flatpickr/dist/themes/material_green.css";
-import Options from "../forms/Options.js";
+
+import FriendsTbl from "@views/apps/user/components/tables/FriendsTbl.js";
+import Options from "@views/apps/user/components/forms/Options.js";
 const selectOptions = [
   { value: "ocean", label: "Ocean" },
   { value: "blue", label: "Blue" },

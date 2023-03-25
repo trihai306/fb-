@@ -18,8 +18,8 @@ import {handleLogin} from '@store/authentication'
 import {AbilityContext} from '@src/utility/context/Can'
 
 // ** Custom Components
-import Avatar from '@components/avatar'
-import InputPasswordToggle from '@components/input-password-toggle'
+import Avatar from "@components/avatar";
+import InputPasswordToggle from "@components/input-password-toggle";
 
 // ** Utils
 import {getHomeRouteForLoggedInUser} from '@utils'
@@ -38,8 +38,8 @@ import {
 } from 'reactstrap'
 
 // ** Illustrations Imports
-import illustrationsLight from '@src/assets/images/pages/login-v2.svg'
-import illustrationsDark from '@src/assets/images/pages/login-v2-dark.svg'
+import illustrationsLight from "@src/assets/images/pages/login-v2.svg";
+import illustrationsDark from "@src/assets/images/pages/login-v2-dark.svg";
 
 // ** Styles
 import '@styles/react/pages/page-authentication.scss'
@@ -259,4 +259,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default Login;

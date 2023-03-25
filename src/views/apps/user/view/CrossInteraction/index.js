@@ -4,9 +4,9 @@ import { Fragment } from "react";
 import { Row, Col, Label, Button, Input, Progress } from "reactstrap";
 import Select from "react-select";
 import { selectThemeColors } from "@utils";
-import PageTbl from "../viewAppUser/tables/PageTbl.js";
 import InputNumber from "rc-input-number";
 import { Plus, Minus } from "react-feather";
+import PageTbl from "../../components/tables/PageTbl.js";
 const selectOptions = [
   { value: "ocean", label: "Ocean" },
   { value: "blue", label: "Blue" },

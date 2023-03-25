@@ -1,5 +1,6 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable no-tabs */
+import PageTbl from "@views/apps/user/components/tables/PageTbl.js";
 import { Fragment } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
@@ -13,7 +14,7 @@ import {
   FormText,
   Button,
 } from "reactstrap";
-import PageTbl from "../tables/PageTbl";
+
 
 const ScanTabTane = () => {
   const onSubmit = (data) => console.log(data);
@@ -23,13 +24,13 @@ const ScanTabTane = () => {
   return (
     <Fragment>
       <Row>
-        <Col md="5" xs="12">
+        <Col md="4" xs="12">
           <PageTbl />
         </Col>
 
         <Col md="1" xs="12"></Col>
 
-        <Col md="6" xs="12">
+        <Col md="7" xs="12">
           <Row>
             <Col xl="7" xs={{ order: 0 }}>
               <Form onSubmit={handleSubmit(onSubmit)}>

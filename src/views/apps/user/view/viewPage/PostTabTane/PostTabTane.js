@@ -2,13 +2,16 @@
 /* eslint-disable no-tabs */
 import { Fragment } from "react";
 import { Row, Col, Label, Button, Input, Progress } from "reactstrap";
-import FriendsTbl from "../tables/FriendsTbl.js";
+
 import Select from "react-select";
 import { selectThemeColors } from "@utils";
 import Flatpickr from "react-flatpickr";
-import PickerDateTime from "@views/forms/form-elements/datepicker/PickerDateTime.js";
 import "flatpickr/dist/themes/material_green.css";
-import Options from "../forms/Options.js";
+
+import FriendsTbl from "@views/apps/user/components/tables/FriendsTbl.js";
+import Options from "@views/apps/user/components/forms/Options.js";
+import InputNumber from "rc-input-number";
+import { Plus, Minus } from "react-feather";
 const selectOptions = [
   { value: "ocean", label: "Ocean" },
   { value: "blue", label: "Blue" },
@@ -126,9 +129,17 @@ const PostTabTane = () => {
               <Button size="sm">Ảnh</Button>
             </Col>
             <Col md="4" className="d-flex align-items-center gap-1">
-              <Input bsSize="sm" type="number" />
+              <InputNumber
+                defaultValue={0}
+                upHandler={<Plus />}
+                downHandler={<Minus />}
+              />
               <Label>đến</Label>
-              <Input bsSize="sm" type="number" />
+              <InputNumber
+                defaultValue={0}
+                upHandler={<Plus />}
+                downHandler={<Minus />}
+              />
             </Col>
           </Row>
 
@@ -169,12 +180,12 @@ const PostTabTane = () => {
                 </Row>
                 <Row className="mt-1">
                   <Col md="6">
-                    <div className="form-check form-check-inline">
+                    <div className="form-check">
                       <Input type="checkbox" />
-                      <Label className="w-100">Tự động nhắn tin lúc</Label>
+                      <Label className="w-100">Tự động đăng lúc lúc</Label>
                     </div>
                   </Col>
-                  <Col>
+                  <Col md="6">
                     <Flatpickr
                       options={{}}
                       data-enable-time
@@ -182,6 +193,11 @@ const PostTabTane = () => {
                     />
                   </Col>
                 </Row>
+
+                <div className="form-check">
+                  <Input type="checkbox" />
+                  <Label className="w-100">Thích bài viết sau khi đăng</Label>
+                </div>
               </Col>
             </Row>
           </Row>
