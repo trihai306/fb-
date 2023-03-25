@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unresolved */
 // ** React Imports
 import { Suspense, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -28,8 +27,6 @@ import Spinner from './@core/components/spinner/Fallback-spinner'
 // ** Ripple Button
 import './@core/components/ripple-button'
 
-// ** Fake Database
-// import './@fake-db'
 
 // ** PrismJS
 import 'prismjs'

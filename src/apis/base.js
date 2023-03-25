@@ -1,75 +1,78 @@
-import axios from "axios";
+import axios from 'axios';
 
-const HEADERS = {
-  "Content-Type": "application/json",
-  Accept: "application/json",
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "Origin, X-Requested-With, Content-Type, Accept",
+const baseURL = 'http://localhost:8000';
+
+const baseAPI = axios.create({
+    baseURL: `${baseURL}/api`,
+    headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+    },
+});
+
+// Thiết lập interceptor cho request trước khi được gửi đi
+baseAPI.interceptors.request.use(
+    (config) => {
+        // Thêm header Authorization vào các request
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
+
+export const setToken = (accessToken) => {
+    localStorage.setItem('token', accessToken);
 };
 
-const HEADERS_MUlTIPLE_PART = {
-  ...HEADERS,
-  "Content-Type": "multipart/form-data; boundary=something",
-  Accept: "multipart/form-data",
+export const clearToken = () => {
+    localStorage.removeItem('token');
 };
 
-const baseURL = "http://127.0.0.1:8000/api";
-
-export const getURL = (url) => {
-  if (url.startsWith("http")) {
-    return url;
-  } else if (url.startsWith("https")) {
-    return url;
-  }
-  return baseURL + url;
+export const get = async (url, params = {}) => {
+    try {
+        const response = await baseAPI.get(url, { params });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || error.message);
+    }
 };
 
-const setToken = (accessToken) => {
-  HEADERS.Authorization = `Bearer ${accessToken}`;
-  HEADERS_MUlTIPLE_PART.Authorization = `Bearer ${accessToken}`;
+export const post = async (url, data = {}) => {
+    try {
+        const response = await baseAPI.post(url, data);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || error.message);
+    }
 };
 
-const clearToken = () => {
-  delete HEADERS.Authorization;
-  delete HEADERS_MUlTIPLE_PART.Authorization;
+export const put = async (url, data = {}) => {
+    try {
+        const response = await baseAPI.put(url, data);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || error.message);
+    }
 };
 
-export const api = {
-  get: (url, params = {}) => {
-    console.log("url:", getURL(url));
-    return axios.get(getURL(url), {
-      params,
-      headers: HEADERS,
-    });
-  },
-
-  post: (url, body = {}, params = {}) => {
-    console.log("url:", getURL(url));
-    console.log("body url:", body);
-    return axios.post(getURL(url), body, {
-      params,
-      headers: HEADERS,
-    });
-  },
-
-  patch: (url, params) => {
-    return axios.patch(getURL(url), params, {
-      headers: HEADERS,
-    });
-  },
-
-  postMultiplePart: (url, params) => {
-    return axios.post(getURL(url), params, {
-      headers: HEADERS_MUlTIPLE_PART,
-    });
-  },
+export const remove = async (url, params = {}) => {
+    try {
+        const response = await baseAPI.delete(url, { params });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || error.message);
+    }
 };
 
-const exportObject = {
-  clearToken,
-  setToken,
-  ...api,
+export default {
+    setToken,
+    clearToken,
+    get,
+    post,
+    put,
+    remove,
 };
-
-export default exportObject;

@@ -12,7 +12,7 @@ import { Row, Col, Alert } from 'reactstrap'
 // ** User View Components
 import UserTabs from './Tabs'
 import PlanCard from './PlanCard'
-import UserInfoCard from './UserInfoCard'
+import UserInfoCard from '.InfoCard'
 
 // ** Styles
 import '@styles/react/apps/app-users.scss'
@@ -54,7 +54,7 @@ const UserView = () => {
     <Alert color='danger'>
       <h4 className='alert-heading'>User not found</h4>
       <div className='alert-body'>
-        User with id: {id} doesn't exist. Check list of all Users: <Link to='/apps/user/list'>Users List</Link>
+        User with id: {id} doesn't exist. Check list of all Users: <Link to='/apps/list'>Users List</Link>
       </div>
     </Alert>
   )
