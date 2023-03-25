@@ -2,11 +2,13 @@
 /* eslint-disable no-tabs */
 import { Fragment } from "react";
 import { Row, Col, Label, Button, Input, Progress } from "reactstrap";
-import FriendsTbl from "../tables/FriendsTbl.js";
+
 import "flatpickr/dist/themes/material_green.css";
-import Options from "../forms/Options.js";
-import PageTbl from "../tables/PageTbl.js";
+
+
 import { v4 as uuidv4 } from 'uuid';
+import FriendsTbl from "@views/apps/user/components/tables/FriendsTbl.js";
+import Options from "@views/apps/user/components/forms/Options.js";
 const optionsCheck = [
   {
     title: "Email",
@@ -41,13 +43,13 @@ const ScanFileTabTane = () => {
   return (
     <Fragment>
       <Row>
-        <Col md="5" xs="12">
+        <Col md="4" xs="12">
           <FriendsTbl />
         </Col>
 
         <Col md="1" xs="12"></Col>
 
-        <Col md="6" xs="12">
+        <Col md="7" xs="12">
           <Row>
             <Col md="6">
               <Label>Tùy chọn thực thi</Label>
@@ -106,7 +108,7 @@ const ScanFileTabTane = () => {
               <Button size="sm">Nạp</Button>
             </Col>
             <Col md="12" xs="12">
-              <PageTbl />
+              <FriendsTbl />
             </Col>
           </Row>
         </Col>

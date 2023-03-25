@@ -1,6 +1,7 @@
 import { Row, Col, Label, Button, Input } from "reactstrap";
-import PageTbl from "../viewAppUser/tables/PageTbl.js";
+
 import Select from "react-select";
+import PageTbl from "../../components/tables/PageTbl.js";
 const selectOptions = [
   { value: "ocean", label: "Ocean" },
   { value: "blue", label: "Blue" },

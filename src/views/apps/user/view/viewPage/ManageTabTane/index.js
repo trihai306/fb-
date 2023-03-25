@@ -2,12 +2,11 @@
 /* eslint-disable no-tabs */
 import { Fragment } from "react";
 import { Row, Col, Label, Button, Input, Progress } from "reactstrap";
-import FriendsTbl from "../../tables/FriendsTbl.js";
 import "flatpickr/dist/themes/material_green.css";
-import Flatpickr from "react-flatpickr";
-import Options from "../../forms/Options.js";
-import PageTbl from "../../tables/PageTbl.js";
-
+import Options from "@views/apps/user/components/forms/Options.js";
+import FriendsTbl from "@views/apps/user/components/tables/FriendsTbl.js";
+import InputNumber from "rc-input-number";
+import { Plus, Minus } from "react-feather";
 const mockData = [
   {
     title: "Tải dữ liệu của bạn bè",
@@ -47,13 +46,13 @@ const ManageTabTane = () => {
   return (
     <Fragment>
       <Row>
-        <Col md="5" xs="12">
+        <Col md="4" xs="12">
           <FriendsTbl />
         </Col>
 
         <Col md="1" xs="12"></Col>
 
-        <Col md="6" xs="12">
+        <Col md="7" xs="12">
           <Row>
             <Col md="3" xs="6">
               <Label>Hành động</Label>
@@ -79,6 +78,7 @@ const ManageTabTane = () => {
 
           <Row className="mt-1">
             <Col md="3" xs="6">
+              <Label>Hành động</Label>
               <div className="d-flex gap-1 jusity-content-start flex-column gap-1">
                 <div className="form-check">
                   <Input type="checkbox" />
@@ -101,62 +101,76 @@ const ManageTabTane = () => {
             </Col>
 
             <Col md="9" xs="6">
-              <Label>Tải dữ liệu của bạn bè</Label>
-              <div className="d-flex  align-items-center gap-1">
-                <Label className="w-25">Thư mục</Label>
+              <Label>Tìm page</Label>
+              <div className="d-flex-wrap-center gap-1">
+                <Label className="w-25">Từ khóa</Label>
                 <Input
                   type="text"
                   bsSize="sm"
-                  placeholder="Đường dãn thư mục để lưu. Ví dụ: D:\ABC"
+                  placeholder="Từ khóa; Từ khóa;..."
                 />
-                <Button size="sm">Chọn</Button>
               </div>
-              <Row>
-                <Col md="4" xs="6">
-                  <div className="form-check">
-                    <Input bsSize="sm" type="checkbox" />
-                    <Label>Ảnh đại diện</Label>
-                  </div>
-                </Col>
-                <Col md="4" xs="6">
-                  <div className="form-check">
-                    <Input bsSize="sm" type="checkbox" />
-                    <Label>Danh sách bạn bè</Label>
-                  </div>
-                </Col>
-                <Col md="4" xs="6">
-                  <div className="form-check">
-                    <Input bsSize="sm" type="checkbox" />
-                    <Label>Album ảnh</Label>
-                  </div>
-                </Col>
-                <Col md="4" xs="6">
-                  <div className="form-check">
-                    <Input bsSize="sm" type="checkbox" />
-                    <Label>Tin nhắn</Label>
-                  </div>
-                </Col>
-                <Col md="4" xs="6">
-                  <div className="form-check">
-                    <Input bsSize="sm" type="checkbox" />
-                    <Label>Giới hạn số lượng ảnh Album</Label>
-                  </div>
-                </Col>
-                <Col md="4" xs="6">
-                  <div className="form-check">
-                    <Input bsSize="sm" type="number" />
-                    <Label>ảnh</Label>
-                  </div>
-                </Col>
-                <Button size="sm">Bắt đầu</Button>
-              </Row>
+              <Label>Tổng số lượt người thích của Page phải:</Label>
+
+              <div className="d-flex align-items-center gap-1">
+                <div className="form-check">
+                  <Input type="checkbox" />
+                  <Label className="w-100">Có nhiều hơn: </Label>
+                </div>
+                <InputNumber
+                  className="custom-input-number"
+                  upHandler={<Plus />}
+                  downHandler={<Minus />}
+                  defaultValue={0}
+                />
+                <Label>lượt thích</Label>
+              </div>
+              <div className="d-flex align-items-center gap-1">
+                <div className="form-check">
+                  <Input type="checkbox" />
+                  <Label className="w-100">Có ít hơn: </Label>
+                </div>
+                <InputNumber
+                  upHandler={<Plus />}
+                  downHandler={<Minus />}
+                  defaultValue={0}
+                />
+                <Label>lượt thích</Label>
+              </div>
+
+              <div className="form-check">
+                <Input type="checkbox" />
+                <Label>Chỉ tìm những Page đã thích</Label>
+              </div>
+
+              <div className="d-flex align-items-center gap-1">
+                <div className="form-check">
+                  <Input type="checkbox" />
+                  <Label>Dừng khi tìm thấy vượt quá</Label>
+                </div>
+                <InputNumber
+                  upHandler={<Plus />}
+                  downHandler={<Minus />}
+                  defaultValue={0}
+                />
+                <Label>kết quả</Label>
+              </div>
+              <Button
+                className="d-flex justify-content-center ms-auto me-auto"
+                size="sm"
+              >
+                Bắt đầu tìm
+              </Button>
 
               <Row>
                 <Col md="6" xs="12">
                   <Label>Trạng thái</Label>
                   {mockData.map((data) => {
                     return (
-                      <div className="d-flex gap-1 align-items-center">
+                      <div
+                        key={data.title}
+                        className="d-flex gap-1 align-items-center"
+                      >
                         <Label className="w-100">{data.title}</Label>
                         <Label>{data.value}</Label>
                       </div>
@@ -165,7 +179,7 @@ const ManageTabTane = () => {
                 </Col>
 
                 <Col md="6" xs="12">
-                  <PageTbl />
+                  <FriendsTbl />
                 </Col>
               </Row>
             </Col>

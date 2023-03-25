@@ -93,6 +93,7 @@ export default class JwtService {
   }
 
   login(...args) {
+    console.log(args)
     return axios.post(this.jwtConfig.loginEndpoint, ...args)
   }
 

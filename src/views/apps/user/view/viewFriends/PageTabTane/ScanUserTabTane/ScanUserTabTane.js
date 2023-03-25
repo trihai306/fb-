@@ -2,15 +2,14 @@
 /* eslint-disable no-tabs */
 import { Fragment } from "react";
 import { Row, Col, Label, Button, Input, Progress } from "reactstrap";
-import FriendsTbl from "../../tables/FriendsTbl.js";
 import "flatpickr/dist/themes/material_green.css";
 import MonthSelect from "flatpickr/dist/plugins/monthSelect/index";
 import Flatpickr from "react-flatpickr";
 import Select from "react-select";
 import "flatpickr/dist/plugins/monthSelect/style.css";
 import "./styles.scss";
-import Options from "../../forms/Options.js";
-import PageTbl from "../../tables/PageTbl.js";
+import FriendsTbl from "@views/apps/user/components/tables/FriendsTbl.js";
+import Options from "@views/apps/user/components/forms/Options.js";
 const selectOptions = [
   { value: "ocean", label: "Ocean" },
   { value: "blue", label: "Blue" },
@@ -23,13 +22,13 @@ const ScanUserTabTane = () => {
   return (
     <Fragment>
       <Row>
-        <Col md="5" xs="12">
+        <Col md="4" xs="12">
           <FriendsTbl />
         </Col>
 
         <Col md="1" xs="12"></Col>
 
-        <Col md="6" xs="12">
+        <Col md="7" xs="12">
           <Row>
             <Col md="6" xs="12">
               <Row style={{ maxHeight: "500px", overflow: "auto" }}>
@@ -185,7 +184,7 @@ const ScanUserTabTane = () => {
               </div>
             </Col>
           </Row>
-          <PageTbl />
+          <FriendsTbl />
         </Col>
       </Row>
     </Fragment>

@@ -1,4 +1,4 @@
-import mock from './mock'
+// import mock from './mock'
 
 import './jwt'
 import './select'
@@ -23,4 +23,4 @@ import './cards/card-statistics'
 import './pages/account-settings'
 import './autoComplete/autoComplete'
 
-mock.onAny().passThrough()
+// mock.onAny().passThrough()

@@ -2,25 +2,25 @@
 /* eslint-disable no-tabs */
 import { Fragment } from "react";
 import { Row, Col, Label, Button, Input, Progress } from "reactstrap";
-import FriendsTbl from "../../tables/FriendsTbl.js";
+
 import "flatpickr/dist/themes/material_green.css";
 import Flatpickr from "react-flatpickr";
-import Options from "../../forms/Options.js";
-import PageTbl from "../../tables/PageTbl.js";
+import FriendsTbl from "@views/apps/user/components/tables/FriendsTbl.js";
+import Options from "@views/apps/user/components/forms/Options.js";
 
 const TimelineTabTane = () => {
   return (
     <Fragment>
       <Row>
-        <Col md="5" xs="12">
+        <Col md="4" xs="12">
           <FriendsTbl />
         </Col>
 
         <Col md="1" xs="12"></Col>
 
-        <Col md="6" xs="12">
+        <Col md="7" xs="12">
           <Row>
-            <Col md="6" xs="12">
+            <Col md="5" xs="12">
               <Row>
                 <Label>Tùy chọn quét bài đăng trên dòng thời gian</Label>
                 <Row>
@@ -116,7 +116,7 @@ const TimelineTabTane = () => {
                 </Row>
               </Row>
             </Col>
-            <Col md="6" xs="12">
+            <Col md="7" xs="12">
               <div className="d-flex">
                 <Label>Tiến trình: 0-0/0</Label>
                 <Label className="ms-auto">Chờ: 00:00:00</Label>
@@ -135,7 +135,7 @@ const TimelineTabTane = () => {
               </div>
             </Col>
           </Row>
-          <PageTbl />
+          <FriendsTbl />
         </Col>
       </Row>
     </Fragment>

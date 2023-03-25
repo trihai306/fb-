@@ -9,15 +9,16 @@ import {
   TabContent,
 } from "reactstrap";
 import { Home, Settings, EyeOff, User } from "react-feather";
-import ScanTabTane from "./ScanTabTane.js";
-import MessTabTane from "./MessTabTane.js";
-import PostTabTane from "./PostTabTane.js";
-import ScanFileTabTane from "./ScanFileTabTane.js";
-import ScanUserTabTane from "./ScanUserTabTane/ScanUserTabTane.js";
-import TimelineTabTane from "./TimelineTabTane/index.js";
-import ManageTabTane from "./ManageTabTane/index.js";
-import SendMessage from "../../SendMessage/index.js";
-import CrossInteraction from "../../CrossInteraction/index.js";
+
+import CrossInteraction from "../CrossInteraction/index.js";
+import ManageTabTane from "./PageTabTane/ManageTabTane/index.js";
+import ScanUserTabTane from "./PageTabTane/ScanUserTabTane/ScanUserTabTane.js";
+import TimelineTabTane from "./PageTabTane/TimelineTabTane/index.js";
+import ScanFileTabTane from "./PageTabTane/ScanFileTabTane/ScanFileTabTane.js";
+import PostTabTane from "./PageTabTane/PostTabTane/PostTabTane.js";
+import MessTabTane from "./PageTabTane/MessTabTane/MessTabTane.js";
+import ScanTabTane from "./PageTabTane/ScanTabTane/ScanTabTane.js";
+import SendMessage from "../SendMessage/index.js";
 const tabs = [
   {
     title: "Quản lý",
@@ -73,7 +74,7 @@ const tabs = [
 ];
 
 const Page = () => {
-  const [active, setActive] = useState(tabs[6].key);
+  const [active, setActive] = useState(tabs[7].key);
 
   const toggle = (tab) => {
     if (active !== tab) {
