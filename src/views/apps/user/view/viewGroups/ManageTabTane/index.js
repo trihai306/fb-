@@ -1,0 +1,219 @@
+/* eslint-disable import/no-unresolved */
+/* eslint-disable no-tabs */
+import { Fragment } from "react";
+import { Row, Col, Label, Button, Input, Progress } from "reactstrap";
+import "flatpickr/dist/themes/material_green.css";
+import Options from "@views/apps/user/components/forms/Options.js";
+import FriendsTbl from "@views/apps/user/components/tables/FriendsTbl.js";
+import InputNumber from "rc-input-number";
+import { Plus, Minus } from "react-feather";
+const mockData = [
+  {
+    title: "Tải dữ liệu của bạn bè",
+    value: "IDE",
+  },
+  {
+    title: "Dòng thời gian",
+    value: "IDE",
+  },
+  {
+    title: "Quét UserId",
+    value: "IDE",
+  },
+  {
+    title: "Quét hồ sơ",
+    value: "IDE",
+  },
+  {
+    title: "Quét tương tác",
+    value: "IDE",
+  },
+  {
+    title: "Đăng tường",
+    value: "IDE",
+  },
+  {
+    title: "Nhắn tin",
+    value: "IDE",
+  },
+  {
+    title: "Bình luận",
+    value: "IDE",
+  },
+];
+
+const ManageTabTane = () => {
+  return (
+    <Fragment>
+      <Row>
+        <Col md="4" xs="12">
+          <FriendsTbl />
+        </Col>
+
+        <Col md="1" xs="12"></Col>
+
+        <Col md="7" xs="12">
+          <Row>
+            <Col md="3" xs="6">
+              <Label>Hành động</Label>
+              <div className="d-flex gap-1 jusity-content-start flex-column">
+                <Button size="sm">Lấy danh sách</Button>
+                <Button size="sm">Lưu</Button>
+                <Button size="sm">Nạp</Button>
+                <Button size="sm">Xáo trộn</Button>
+              </div>
+            </Col>
+            <Col md="9" xs="6">
+              <div className="d-flex">
+                <Label>Tiến trình: 0-0/0</Label>
+                <Label className="ms-auto">Chờ: 00:00:00</Label>
+              </div>
+              <Progress value="55" className="progress-bar-danger">
+                55%
+              </Progress>
+
+              <Options />
+            </Col>
+          </Row>
+
+          <Row className="mt-1">
+            <Col md="3" xs="6">
+              <Label>Hành động</Label>
+              <div className="d-flex gap-1 jusity-content-start flex-column gap-1">
+                <div className="form-check">
+                  <Input type="checkbox" />
+                  <Label className="w-100">Dùng browser</Label>
+                </div>
+                <div className="form-check">
+                  <Input type="radio" />
+                  <Label className="w-100">Tham gia nhóm</Label>
+                </div>
+                <Label>Trả lời câu hỏi:</Label>
+                <Input type="text" />
+                <div className="form-check">
+                  <Input type="radio" />
+                  <Label className="w-100">Rời nhóm</Label>
+                </div>
+                <div className="form-check">
+                  <Input type="checkbox" />
+                  <Label className="w-100">Chỉ nhóm có phê duyệt bài</Label>
+                </div>
+                <Button size="sm">Tiến hành</Button>
+              </div>
+            </Col>
+
+            <Col md="9" xs="6">
+              <Label>Tìm Nhóm</Label>
+              <div className="d-flex gap-1">
+                <Label className="w-25">Từ khóa:</Label>
+                <Input
+                  type="text"
+                  bsSize="sm"
+                  placeholder="Từ khóa; Từ khóa;..."
+                />
+              </div>
+              <div className="d-flex gap-1 align-items-center flex-wrap mt-1">
+                <Label>Loại nhóm:</Label>
+                <div className="form-check">
+                  <Input type="radio" />
+                  <Label>Nhóm công khai</Label>
+                </div>
+                <div className="form-check">
+                  <Input type="radio" />
+                  <Label>Nhóm riêng tư</Label>
+                </div>
+                <div className="form-check">
+                  <Input type="radio" />
+                  <Label>Tất cả</Label>
+                </div>
+              </div>
+              <Label>Tổng số thành viên tham gia của nhoms phải:</Label>
+
+              <div className="d-flex align-items-center gap-1">
+                <div className="form-check">
+                  <Input type="checkbox" />
+                  <Label className="w-100">Có nhiều hơn: </Label>
+                </div>
+                <InputNumber
+                  className="custom-input-number"
+                  upHandler={<Plus />}
+                  downHandler={<Minus />}
+                  defaultValue={0}
+                />
+                <Label>lượt thích</Label>
+              </div>
+              <div className="d-flex align-items-center gap-1">
+                <div className="form-check">
+                  <Input type="checkbox" />
+                  <Label className="w-100">Có ít hơn: </Label>
+                </div>
+                <InputNumber
+                  upHandler={<Plus />}
+                  downHandler={<Minus />}
+                  defaultValue={0}
+                />
+                <Label>lượt thích</Label>
+              </div>
+
+              <div className="form-check">
+                <Input type="checkbox" />
+                <Label>Chỉ tìm những nhóm đã thích</Label>
+              </div>
+
+              <div className="d-flex align-items-center gap-1">
+                <div className="form-check">
+                  <Input type="checkbox" />
+                  <Label>Dừng khi tìm thấy vượt quá</Label>
+                </div>
+                <InputNumber
+                  upHandler={<Plus />}
+                  downHandler={<Minus />}
+                  defaultValue={0}
+                />
+                <Label>kết quả</Label>
+              </div>
+              <div className="d-flex flex-wrap justify-content-space align-items-center ">
+                <Button
+                  className="d-flex justify-content-center ms-auto me-auto"
+                  size="sm"
+                >
+                  Bắt đầu tìm
+                </Button>
+                <Button
+                  className="d-flex justify-content-center ms-auto me-auto"
+                  size="sm"
+                >
+                  Tìm nhanh
+                </Button>
+              </div>
+
+              <Row>
+                <Col md="6" xs="12">
+                  <Label>Trạng thái</Label>
+                  {mockData.map((data) => {
+                    return (
+                      <div
+                        key={data.title}
+                        className="d-flex gap-1 align-items-center"
+                      >
+                        <Label className="w-100">{data.title}</Label>
+                        <Label>{data.value}</Label>
+                      </div>
+                    );
+                  })}
+                </Col>
+
+                <Col md="6" xs="12">
+                  <Label>Nhật ký hành động:</Label>
+                  <FriendsTbl />
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    </Fragment>
+  );
+};
+
+export default ManageTabTane;

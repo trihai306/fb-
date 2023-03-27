@@ -8,6 +8,7 @@ import { Home, Settings, EyeOff, User } from "react-feather";
 import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
 import Friends from "./viewFriends/index.js";
 import Page from "./viewPage/index.js";
+import GroupsPage from "./viewGroups/index.js";
 
 const headerTitles = [
   {
@@ -27,7 +28,7 @@ const headerTitles = [
   {
     title: "Nhóm",
     key: "group",
-    components: <></>,
+    components: <GroupsPage />,
   },
   {
     title: "Page",
@@ -63,7 +64,7 @@ const headerTitles = [
 
 const TabsIcons = () => {
   // ** State
-  const [active, setActive] = useState(headerTitles[3].key);
+  const [active, setActive] = useState(headerTitles[2].key);
 
   const toggle = (tab) => {
     if (active !== tab) {
