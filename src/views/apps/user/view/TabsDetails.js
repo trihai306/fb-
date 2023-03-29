@@ -9,6 +9,9 @@ import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
 import Friends from "./viewFriends/index.js";
 import Page from "./viewPage/index.js";
 import GroupsPage from "./viewGroups/index.js";
+import UserIdTab from './viewUserId';
+import ScanPost from "./ScanPost/index.js";
+import AutoCommentPage from "./AutoComment/index.js";
 
 const headerTitles = [
   {
@@ -38,7 +41,7 @@ const headerTitles = [
   {
     title: "User Id",
     key: "userId",
-    components: <></>,
+    components: <UserIdTab />,
   },
   {
     title: "Úp tin",
@@ -48,12 +51,12 @@ const headerTitles = [
   {
     title: "Auto Comment",
     key: "autoComment",
-    components: <></>,
+    components: <AutoCommentPage />,
   },
   {
     title: "Quét bài viết",
     key: "scan",
-    components: <></>,
+    components: <ScanPost />,
   },
   {
     title: "Trình duyệt",
@@ -64,7 +67,7 @@ const headerTitles = [
 
 const TabsIcons = () => {
   // ** State
-  const [active, setActive] = useState(headerTitles[2].key);
+  const [active, setActive] = useState(headerTitles[6].key);
 
   const toggle = (tab) => {
     if (active !== tab) {
@@ -93,7 +96,7 @@ const TabsIcons = () => {
       </Nav>
       <TabContent className="py-50" activeTab={active}>
         {headerTitles?.map((item) => {
-          return (
+          return active === item.key && (
             <TabPane key={item.key} tabId={item.key}>
               {item.components}
             </TabPane>
