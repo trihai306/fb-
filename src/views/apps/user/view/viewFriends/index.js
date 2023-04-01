@@ -17,8 +17,8 @@ import TimelineTabTane from "./PageTabTane/TimelineTabTane/index.js";
 import ScanFileTabTane from "./PageTabTane/ScanFileTabTane/ScanFileTabTane.js";
 import PostTabTane from "./PageTabTane/PostTabTane/PostTabTane.js";
 import MessTabTane from "./PageTabTane/MessTabTane/MessTabTane.js";
-import ScanTabTane from "./PageTabTane/ScanTabTane/ScanTabTane.js";
 import SendMessage from "../SendMessage/index.js";
+import CommentTabTane from "./PageTabTane/CommentTabTane/CommentTabTane.js";
 const tabs = [
   {
     title: "Quản lý",
@@ -53,7 +53,7 @@ const tabs = [
   {
     title: "Bình luận",
     key: "comment",
-    components: <></>,
+    components: <CommentTabTane/>,
   },
   {
     title: "Tương tác chéo",
@@ -64,12 +64,6 @@ const tabs = [
     title: "Soạn tin",
     key: "sendMessage",
     components: <SendMessage />,
-  },
-
-  {
-    title: "Quét thông tin",
-    key: "scan",
-    components: <ScanTabTane />,
   },
 ];
 
