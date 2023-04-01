@@ -9,19 +9,17 @@ import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
 import Friends from "./viewFriends/index.js";
 import Page from "./viewPage/index.js";
 import GroupsPage from "./viewGroups/index.js";
-import UserIdTab from './viewUserId';
+import UserIdTab from "./viewUserId";
 import ScanPost from "./ScanPost/index.js";
 import AutoCommentPage from "./AutoComment/index.js";
+import UpPost from "./UpPost/index.js";
+import Persional from "./Persional/index.js";
 
 const headerTitles = [
   {
     title: "Cá nhân",
     key: "persional",
-    components: (
-      <>
-        <h1>Hello worlds</h1>
-      </>
-    ),
+    components: <Persional />,
   },
   {
     title: "Bạn bè",
@@ -46,7 +44,7 @@ const headerTitles = [
   {
     title: "Úp tin",
     key: "sendMess",
-    components: <></>,
+    components: <UpPost />,
   },
   {
     title: "Auto Comment",
@@ -96,10 +94,12 @@ const TabsIcons = () => {
       </Nav>
       <TabContent className="py-50" activeTab={active}>
         {headerTitles?.map((item) => {
-          return active === item.key && (
-            <TabPane key={item.key} tabId={item.key}>
-              {item.components}
-            </TabPane>
+          return (
+            active === item.key && (
+              <TabPane key={item.key} tabId={item.key}>
+                {item.components}
+              </TabPane>
+            )
           );
         })}
       </TabContent>

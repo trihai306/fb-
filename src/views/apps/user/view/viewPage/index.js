@@ -14,6 +14,8 @@ import PostTabTane from "./PostTabTane/PostTabTane.js";
 import MessTabTane from "./MessTabTane/MessTabTane.js";
 import TimelineTabTane from "./TimelineTabTane/index.js";
 import ScanUserTabTane from "./ScanUserTabTane/ScanUserTabTane.js";
+import ScanTabTane from "./ScanTabTane/ScanTabTane.js";
+import CommentTabTane from "./CommentTabTane/CommentTabTane.js";
 
 const tabs = [
   {
@@ -40,6 +42,16 @@ const tabs = [
     title: "Nhắn tin",
     key: "sendMsg",
     components: <MessTabTane />,
+  },
+  {
+    title: "Bình luận",
+    key: "comment",
+    components: <CommentTabTane />,
+  },
+  {
+    title: "Quét thông tin",
+    key: "scan",
+    components: <ScanTabTane />,
   },
 ];
 

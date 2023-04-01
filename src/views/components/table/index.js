@@ -42,6 +42,7 @@ const TableCommon = ({
         noHeader
         pagination
         columns={columns}
+        selectableRows
         paginationPerPage={RECORDS_PER_PAGE}
         className="react-dataTable"
         paginationDefaultPage={current_page + 1}
