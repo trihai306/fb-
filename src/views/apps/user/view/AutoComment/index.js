@@ -1,6 +1,6 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable no-tabs */
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Row, Col, Label, Button, Input, Progress } from "reactstrap";
 
 import Select from "react-select";
@@ -12,6 +12,7 @@ import FriendsTbl from "@views/apps/user/components/tables/FriendsTbl.js";
 import Options from "@views/apps/user/components/forms/Options.js";
 import InputNumber from "rc-input-number";
 import { Plus, Minus } from "react-feather";
+// import { eel } from "../../../../../eel.js";
 const selectOptions = [
   { value: "ocean", label: "Ocean" },
   { value: "blue", label: "Blue" },
@@ -21,6 +22,29 @@ const selectOptions = [
 ];
 
 const AutoCommentPage = () => {
+  const [optionsSt, setOptionSt] = useState({
+    fromStopVal: 0,
+    toStopVal: 0,
+    finishTurn: 0,
+    stopSec: 0,
+    stopWhenErrStatus: false,
+    stopWhenErrVal: 0,
+    maxTurnStatus: false,
+    maxTurnVal: 0,
+    positionStartStatus: false,
+    positionStartVal: 0,
+    positionEndStatus: false,
+    positionEndVal: 0,
+    repeatStatus: 0,
+    repeatVal: 0,
+  });
+
+  async function handle() {
+    console.log("run eel test!");
+    const res = await window.eel.get_options_value(optionsSt)();
+    console.log(res);
+  }
+
   return (
     <Fragment>
       <Row>
@@ -40,7 +64,9 @@ const AutoCommentPage = () => {
             <Label>Link của bài viết:</Label>
             <div className="d-flex gap-1 align-items-center">
               <Input bsSize="sm" placeholder="Đường link của bài viết" />
-              <Button size="sm">Thêm</Button>
+              <Button onClick={handle} size="sm">
+                Thêm
+              </Button>
             </div>
           </Col>
           <FriendsTbl />
@@ -99,7 +125,7 @@ const AutoCommentPage = () => {
             <Label>Tùy chọn thực thi</Label>
             <Row>
               <Col md="6">
-                <Options />
+                <Options optionsSt={optionsSt} setOptionSt={setOptionSt} />
               </Col>
               <Col md="6">
                 <Row>
@@ -153,7 +179,10 @@ const AutoCommentPage = () => {
                   <Input type="checkbox" />
                   <Label className="w-100">Dùng Browser</Label>
                 </div>
-                <Button className="d-flex justify-content-center">
+                <Button
+                  onClick={handle}
+                  className="d-flex justify-content-center"
+                >
                   Bắt đầu
                 </Button>
               </Col>

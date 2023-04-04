@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Row, Col, Label, Button, Input, Progress } from "reactstrap";
 
 import Select from "react-select";
@@ -18,6 +18,22 @@ const selectOptions = [
   { value: "orange", label: "Orange" },
 ];
 const UpPost = () => {
+  const [optionsSt, setOptionSt] = useState({
+    fromStopVal: 0,
+    toStopVal: 0,
+    finishTurn: 0,
+    stopSec: 0,
+    stopWhenErrStatus: false,
+    stopWhenErrVal: 0,
+    maxTurnStatus: false,
+    maxTurnVal: 0,
+    positionStartStatus: false,
+    positionStartVal: 0,
+    positionEndStatus: false,
+    positionEndVal: 0,
+    repeatStatus: 0,
+    repeatVal: 0,
+  });
   return (
     <Row>
       <Col md="5" xs="12">
@@ -233,7 +249,7 @@ const UpPost = () => {
           <Label>Tùy chọn thực thi</Label>
           <Row>
             <Col md="6">
-              <Options />
+              <Options optionsSt={optionsSt} setOptionSt={setOptionSt} />
             </Col>
             <Col md="6">
               <Row>

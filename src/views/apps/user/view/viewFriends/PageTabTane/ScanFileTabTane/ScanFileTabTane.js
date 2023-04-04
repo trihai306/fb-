@@ -1,45 +1,31 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable no-tabs */
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Row, Col, Label, Button, Input, Progress } from "reactstrap";
 
 import "flatpickr/dist/themes/material_green.css";
-
-
-import { v4 as uuidv4 } from 'uuid';
 import FriendsTbl from "@views/apps/user/components/tables/FriendsTbl.js";
 import Options from "@views/apps/user/components/forms/Options.js";
-const optionsCheck = [
-  {
-    title: "Email",
-  },
-  {
-    title: "Nơi sống",
-  },
-  {
-    title: "Giới tính",
-  },
-  {
-    title: "Nghề nghiệp",
-  },
-  {
-    title: "Ngày sinh",
-  },
-  {
-    title: "Trường trung học",
-  },
-  {
-    title: "Quê quán",
-  },
-  {
-    title: "Trường đại học",
-  },
-  {
-    title: "Số điện thoại",
-  },
-];
+import ScanFileTabProgress from "@views/apps/user/components/common/ScanFileTabProgress.js";
+
 
 const ScanFileTabTane = () => {
+  const [optionsSt, setOptionSt] = useState({
+    fromStopVal: 0,
+    toStopVal: 0,
+    finishTurn: 0,
+    stopSec: 0,
+    stopWhenErrStatus: false,
+    stopWhenErrVal: 0,
+    maxTurnStatus: false,
+    maxTurnVal: 0,
+    positionStartStatus: false,
+    positionStartVal: 0,
+    positionEndStatus: false,
+    positionEndVal: 0,
+    repeatStatus: 0,
+    repeatVal: 0,
+  });
   return (
     <Fragment>
       <Row>
@@ -53,52 +39,10 @@ const ScanFileTabTane = () => {
           <Row>
             <Col md="6">
               <Label>Tùy chọn thực thi</Label>
-              <Options />
+              <Options optionsSt={optionsSt} setOptionSt={setOptionSt} />
             </Col>
             <Col md="6">
-              <Row>
-                <Col md="6">
-                  <Label>Tiến trình 0/0</Label>
-                </Col>
-                <Col md="6">
-                  <Label>Chờ: 00:00:00</Label>
-                </Col>
-              </Row>
-
-              <Row className="mt-1">
-                <Progress value="55" className="progress-bar-danger">
-                  55%
-                </Progress>
-              </Row>
-
-              <Row className="mt-1">
-                <Col md="4">
-                  <Button size="sm">Quét thông tin</Button>
-                </Col>
-                <Col md="4">
-                  <div className="form-check">
-                    <Input type="checkbox" />
-                    <Label className="w-100">Sử dụng Offline</Label>
-                  </div>
-                </Col>
-                <Col md="4">
-                  <Button size="sm">Xóa Offline</Button>
-                </Col>
-              </Row>
-
-              <Label md="12" xs="12">
-                Thông tin cần lấy
-              </Label>
-              <Row>
-                {optionsCheck.map((option) => (
-                  <Col md="6" xs="6" key={uuidv4()}>
-                    <div className="form-check">
-                      <Input type="checkbox" />
-                      <Label className="w-100">{option.title}</Label>
-                    </div>
-                  </Col>
-                ))}
-              </Row>
+              <ScanFileTabProgress />
             </Col>
             <Col
               md="12"
