@@ -1,6 +1,6 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable no-tabs */
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Row, Col, Label, Button, Input, Progress } from "reactstrap";
 
 import "flatpickr/dist/themes/material_green.css";
@@ -11,6 +11,22 @@ import InputNumber from "rc-input-number";
 import { Plus, Minus } from "react-feather";
 
 const TimelineTabTane = () => {
+  const [optionsSt, setOptionSt] = useState({
+    fromStopVal: 0,
+    toStopVal: 0,
+    finishTurn: 0,
+    stopSec: 0,
+    stopWhenErrStatus: false,
+    stopWhenErrVal: 0,
+    maxTurnStatus: false,
+    maxTurnVal: 0,
+    positionStartStatus: false,
+    positionStartVal: 0,
+    positionEndStatus: false,
+    positionEndVal: 0,
+    repeatStatus: 0,
+    repeatVal: 0,
+  });
   return (
     <Fragment>
       <Row>
@@ -123,7 +139,11 @@ const TimelineTabTane = () => {
                     <Input type="checkbox" />
                     <Label>Chỉ quét lấy</Label>
                   </div>
-                  <InputNumber defaultValue={0} upHandler={<Plus />} downHandler={<Minus />} />
+                  <InputNumber
+                    defaultValue={0}
+                    upHandler={<Plus />}
+                    downHandler={<Minus />}
+                  />
                   <Label>bài đầu tiên</Label>
                 </div>
               </Row>
@@ -141,7 +161,7 @@ const TimelineTabTane = () => {
                 <Button size="sm">Quét dòng thời gian</Button>
               </div>
               <Label>Tùy chọn thi hành- Hành động</Label>
-              <Options />
+              <Options optionsSt={optionsSt} setOptionSt={setOptionSt} />
               <div className="d-flex justify-content-end gap-1">
                 <Button size="sm">Lưu</Button>
                 <Button size="sm">Nạp</Button>

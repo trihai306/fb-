@@ -1,10 +1,7 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable no-tabs */
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Row, Col, Label, Button, Input, Progress } from "reactstrap";
-
-import Select from "react-select";
-import { selectThemeColors } from "@utils";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_green.css";
 
@@ -12,15 +9,26 @@ import FriendsTbl from "@views/apps/user/components/tables/FriendsTbl.js";
 import Options from "@views/apps/user/components/forms/Options.js";
 import InputNumber from "rc-input-number";
 import { Plus, Minus } from "react-feather";
-const selectOptions = [
-  { value: "ocean", label: "Ocean" },
-  { value: "blue", label: "Blue" },
-  { value: "purple", label: "Purple" },
-  { value: "red", label: "Red" },
-  { value: "orange", label: "Orange" },
-];
+import CommentSendMessCommon from "@views/apps/user/components/common/CommentSendMessCommon.js";
+
 
 const CommentTabTane = () => {
+  const [optionsSt, setOptionSt] = useState({
+    fromStopVal: 0,
+    toStopVal: 0,
+    finishTurn: 0,
+    stopSec: 0,
+    stopWhenErrStatus: false,
+    stopWhenErrVal: 0,
+    maxTurnStatus: false,
+    maxTurnVal: 0,
+    positionStartStatus: false,
+    positionStartVal: 0,
+    positionEndStatus: false,
+    positionEndVal: 0,
+    repeatStatus: 0,
+    repeatVal: 0,
+  });
   return (
     <Fragment>
       <Row>
@@ -31,62 +39,7 @@ const CommentTabTane = () => {
         <Col md="1" xs="12"></Col>
 
         <Col md="7" xs="12">
-          <Label md="12" xs="12">
-            Chọn nội dung từ tin đăng đã lưu
-          </Label>
-          <Row>
-            <Col md="9">
-              <Row>
-                <Label md="2">Mục:</Label>
-                <Col md="10">
-                  <Select
-                    theme={selectThemeColors}
-                    options={selectOptions}
-                    className="react-select"
-                    classNamePrefix="select"
-                  />
-                </Col>
-              </Row>
-              <Row className="align-items-center">
-                <Label md="2">Tin đăng:</Label>
-                <Col md="8">
-                  <Select
-                    theme={selectThemeColors}
-                    options={selectOptions}
-                    className="react-select"
-                    classNamePrefix="select"
-                  />
-                </Col>
-                <Col md="1">
-                  <Button size="sm">Chọn</Button>
-                </Col>
-              </Row>
-            </Col>
-
-            <Col md="3">
-              <Button className="h-100">Tạo nội dung ngẫu nhiên</Button>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col md="6" sx="12">
-              <Label md="12" xs="12">
-                Nội dung tin nhắn
-              </Label>
-              <Input type="textarea" style={{ minHeight: "70%" }} />
-              <Label>Hướng dẫn chèn Macro không giới hạn</Label>
-              <Label>
-                Gợi ý: thêm {"{rrr}"} đầu nội dung để đăng tin ngẫu nhiên
-              </Label>
-            </Col>
-
-            <Col md="6" sx="12">
-              <Label md="12" xs="12">
-                Nhật ký nhắn tin
-              </Label>
-              <FriendsTbl />
-            </Col>
-          </Row>
+          <CommentSendMessCommon />
 
           <Row>
             <Col md="2">
@@ -156,7 +109,7 @@ const CommentTabTane = () => {
             <Label>Tùy chọn thực thi</Label>
             <Row>
               <Col md="6">
-                <Options />
+                <Options optionsSt={optionsSt} setOptionSt={setOptionSt} />
               </Col>
               <Col md="6">
                 <Row>

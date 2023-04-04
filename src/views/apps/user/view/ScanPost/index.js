@@ -1,15 +1,29 @@
-
-
 import Flatpickr from "react-flatpickr";
 import InputNumber from "rc-input-number";
 import { Plus, Minus } from "react-feather";
 import "flatpickr/dist/themes/material_green.css";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import FriendsTbl from "../../components/tables/FriendsTbl.js";
 import Options from "../../components/forms/Options.js";
 import { Row, Col, Input, Label, Button, Progress } from "reactstrap";
 
 const ScanPost = () => {
+  const [optionsSt, setOptionSt] = useState({
+    fromStopVal: 0,
+    toStopVal: 0,
+    finishTurn: 0,
+    stopSec: 0,
+    stopWhenErrStatus: false,
+    stopWhenErrVal: 0,
+    maxTurnStatus: false,
+    maxTurnVal: 0,
+    positionStartStatus: false,
+    positionStartVal: 0,
+    positionEndStatus: false,
+    positionEndVal: 0,
+    repeatStatus: 0,
+    repeatVal: 0,
+  });
   return (
     <Fragment>
       <Row>
@@ -27,7 +41,7 @@ const ScanPost = () => {
           </div>
           <Label>Danh sách bài viết:</Label>
           <FriendsTbl />
-          <Options />
+          <Options  optionsSt={optionsSt} setOptionSt={setOptionSt} />
         </Col>
 
         <Col md="1" xs="12"></Col>
@@ -134,4 +148,4 @@ const ScanPost = () => {
   );
 };
 
-export default ScanPost
+export default ScanPost;

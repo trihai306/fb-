@@ -25,7 +25,7 @@ const UserView = () => {
 
   // ** Get suer on mount
   useEffect(() => {
-    console.log(id);
+    // console.log(id);
     dispatch(getUser(parseInt(id)));
   }, [dispatch]);
 

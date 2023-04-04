@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { useState } from "react";
 import { Row, Col, Label, Button, Input, Progress } from "reactstrap";
 
 import Select from "react-select";
@@ -9,6 +9,7 @@ import InputNumber from "rc-input-number";
 import { Plus, Minus } from "react-feather";
 import Options from "../../components/forms/Options.js";
 import FriendsTbl from "../../components/tables/FriendsTbl.js";
+
 const selectOptions = [
   { value: "ocean", label: "Ocean" },
   { value: "blue", label: "Blue" },
@@ -17,6 +18,22 @@ const selectOptions = [
   { value: "orange", label: "Orange" },
 ];
 const Persional = () => {
+  const [optionsSt, setOptionSt] = useState({
+    fromStopVal: 0,
+    toStopVal: 0,
+    finishTurn: 0,
+    stopSec: 0,
+    stopWhenErrStatus: false,
+    stopWhenErrVal: 0,
+    maxTurnStatus: false,
+    maxTurnVal: 0,
+    positionStartStatus: false,
+    positionStartVal: 0,
+    positionEndStatus: false,
+    positionEndVal: 0,
+    repeatStatus: 0,
+    repeatVal: 0,
+  });
   return (
     <>
       <Row>
@@ -73,12 +90,12 @@ const Persional = () => {
             </Col>
 
             <Col md="3">
-                <Button>Tìm</Button>
+              <Button>Tìm</Button>
             </Col>
           </Row>
 
           <Label className="mb-1">Tùy chọn thi hành - tìm kiếm</Label>
-          <Options />
+          <Options optionsSt={optionsSt} setOptionSt={setOptionSt} />
           <Row style={{ maxHeight: "500px", overflow: "auto" }}>
             <Label>Tùy chọn để lọc</Label>
             <Row>
@@ -183,7 +200,7 @@ const Persional = () => {
             </Progress>
           </Row>
           <Label>Tùy chọn thi hành - Kết bạn</Label>
-          <Options />
+          <Options optionsSt={optionsSt} setOptionSt={setOptionSt} />
           <Row>
             <Col md="7">
               <FriendsTbl />

@@ -23,11 +23,13 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600"
     />
+    
     <title>Vuexy - React Admin Dashboard Template</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/index.js"></script>
+   
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -38,5 +40,10 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script type="text/javascript" src="http://localhost:8080/eel.js"></script>
+    <script>
+        window.eel.set_host("ws://localhost:8080")
+    </script>
+    <script type="text/javascript" src="/eel.js"></script>
   </body>
 </html>

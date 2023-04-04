@@ -90,9 +90,11 @@ const Page = () => {
           <TabContent className="py-50" activeTab={active}>
             {tabs?.map((item) => {
               return (
-                <TabPane key={item.key} tabId={item.key}>
-                  {item.components}
-                </TabPane>
+                active === item.key && (
+                  <TabPane key={item.key} tabId={item.key}>
+                    {item.components}
+                  </TabPane>
+                )
               );
             })}
           </TabContent>

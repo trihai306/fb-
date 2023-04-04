@@ -1,9 +1,25 @@
 import Options from "@views/apps/user/components/forms/Options.js";
 import FriendsTbl from "@views/apps/user/components/tables/FriendsTbl.js";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Col, Row, Button, Progress, Label, Input } from "reactstrap";
 
 const Groups = () => {
+  const [optionsSt, setOptionSt] = useState({
+    fromStopVal: 0,
+    toStopVal: 0,
+    finishTurn: 0,
+    stopSec: 0,
+    stopWhenErrStatus: false,
+    stopWhenErrVal: 0,
+    maxTurnStatus: false,
+    maxTurnVal: 0,
+    positionStartStatus: false,
+    positionStartVal: 0,
+    positionEndStatus: false,
+    positionEndVal: 0,
+    repeatStatus: 0,
+    repeatVal: 0,
+  });
   return (
     <Fragment>
       <Row>
@@ -21,7 +37,7 @@ const Groups = () => {
           <Row>
             <Col md="6" xs="12">
               <Label>Tùy chọn thi hành</Label>
-              <Options />
+              <Options optionsSt={optionsSt} setOptionSt={setOptionSt} />
             </Col>
 
             <Col md="6" xs="12">

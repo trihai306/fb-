@@ -1,12 +1,13 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable no-tabs */
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Row, Col, Label, Button, Input, Progress } from "reactstrap";
 import "flatpickr/dist/themes/material_green.css";
 import Options from "@views/apps/user/components/forms/Options.js";
 import FriendsTbl from "@views/apps/user/components/tables/FriendsTbl.js";
 import InputNumber from "rc-input-number";
 import { Plus, Minus } from "react-feather";
+import ManageTabStatus from "@views/apps/user/components/common/manageTabStatus.js";
 const mockData = [
   {
     title: "Tải dữ liệu của bạn bè",
@@ -43,6 +44,22 @@ const mockData = [
 ];
 
 const ManageTabTane = () => {
+  const [optionsSt, setOptionSt] = useState({
+    fromStopVal: 0,
+    toStopVal: 0,
+    finishTurn: 0,
+    stopSec: 0,
+    stopWhenErrStatus: false,
+    stopWhenErrVal: 0,
+    maxTurnStatus: false,
+    maxTurnVal: 0,
+    positionStartStatus: false,
+    positionStartVal: 0,
+    positionEndStatus: false,
+    positionEndVal: 0,
+    repeatStatus: 0,
+    repeatVal: 0,
+  });
   return (
     <Fragment>
       <Row>
@@ -72,7 +89,7 @@ const ManageTabTane = () => {
                 55%
               </Progress>
 
-              <Options />
+              <Options optionsSt={optionsSt} setOptionSt={setOptionSt} />
             </Col>
           </Row>
 
@@ -164,18 +181,7 @@ const ManageTabTane = () => {
 
               <Row>
                 <Col md="6" xs="12">
-                  <Label>Trạng thái</Label>
-                  {mockData.map((data) => {
-                    return (
-                      <div
-                        key={data.title}
-                        className="d-flex gap-1 align-items-center"
-                      >
-                        <Label className="w-100">{data.title}</Label>
-                        <Label>{data.value}</Label>
-                      </div>
-                    );
-                  })}
+                  <ManageTabStatus datas={mockData} />
                 </Col>
 
                 <Col md="6" xs="12">

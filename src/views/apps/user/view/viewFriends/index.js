@@ -101,7 +101,7 @@ const Page = () => {
           </Nav>
           <TabContent className="py-50" activeTab={active}>
             {tabs?.map((item) => {
-              return (
+              return active === item.key && (
                 <TabPane key={item.key} tabId={item.key}>
                   {item.components}
                 </TabPane>
