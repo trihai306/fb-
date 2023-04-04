@@ -12,10 +12,10 @@ export default () => {
       global: 'globalThis'
     },
     server: {
-      port: 3000,
+      port: 3005,
       proxy: 'https://pixinvent.com/',
       cors: {
-        origin: ['https://pixinvent.com/', 'http://localhost:3000'],
+        origin: ['https://pixinvent.com/', 'http://localhost:3000', 'http://localhost:8080'],
         methods: ['GET', 'PATCH', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
       }
@@ -82,7 +82,7 @@ export default () => {
                 contents: await fs.readFileSync(args.path, 'utf8')
               }))
             }
-          }
+          },
         ]
       }
     },

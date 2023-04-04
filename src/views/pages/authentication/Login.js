@@ -45,6 +45,7 @@ import illustrationsDark from "@src/assets/images/pages/login-v2-dark.svg";
 import '@styles/react/pages/page-authentication.scss'
 import {login} from "../../../apis/auth";
 
+
 const ToastContent = ({t, name, role}) => {
     return (
         <div className='d-flex'>
@@ -82,34 +83,39 @@ const Login = () => {
 
     const source = skin === 'dark' ? illustrationsDark : illustrationsLight
 
-    const onSubmit = data => {
-        if (Object.values(data).every(field => field.length > 0)) {
-            login(data.loginEmail, data.password)
-                .then(res => {
-                    const data = { ...res.userData, accessToken: res.accessToken.plainTextToken, ability: res.ability }
-                    console.log(data)
-                    dispatch(handleLogin(data))
-                    ability.update(res.ability)
-                    navigate(getHomeRouteForLoggedInUser(data.role))
-                    toast(t => (
-                      <ToastContent t={t} role={data.role || 'admin'} name={data.fullName || data.username || 'John Doe'} />
-                    ))
-                })
-                .catch((err) => {
-                    setError('loginEmail', {
-                        type: 'manual',
-                        message: err.message
-                    })
-                })
-        } else {
-            for (const key in data) {
-                if (data[key].length === 0) {
-                    setError(key, {
-                        type: 'manual'
-                    })
-                }
-            }
-        }
+    const onSubmit = async data => {
+        // let res = await eel.hello()()
+        // console.log(res)
+        console.log(await window.eel.hello()())
+        console.log("run submit!")
+
+        // if (Object.values(data).every(field => field.length > 0)) {        
+        //     login(data.loginEmail, data.password)
+        //         .then(res => {
+        //             const data = { ...res.userData, accessToken: res.accessToken.plainTextToken, ability: res.ability }
+        //             console.log(data)
+        //             dispatch(handleLogin(data))
+        //             ability.update(res.ability)
+        //             navigate(getHomeRouteForLoggedInUser(data.role))
+        //             toast(t => (
+        //               <ToastContent t={t} role={data.role || 'admin'} name={data.fullName || data.username || 'John Doe'} />
+        //             ))
+        //         })
+        //         .catch((err) => {
+        //             setError('loginEmail', {
+        //                 type: 'manual',
+        //                 message: err.message
+        //             })
+        //         })
+        // } else {
+        //     for (const key in data) {
+        //         if (data[key].length === 0) {
+        //             setError(key, {
+        //                 type: 'manual'
+        //             })
+        //         }
+        //     }
+        // }
     }
 
     return (

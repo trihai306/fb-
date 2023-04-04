@@ -18,6 +18,11 @@ import {useState} from "react";
 
 
 const UsersList = () => {
+
+    const handleRun = async () => {
+        await window.eel.hello();
+    }
+
     const [proxyData, setProxyData] = useState([]);
     const [statsData, setStartsData] = useState([
         { color: 'primary', title: 'Tổng tài khoản', icon: <User size={20}/>, stat: '21,459' },
@@ -59,7 +64,7 @@ const UsersList = () => {
                                             </Col>
                                         </Row>
                                     </CardText>
-                                    <Button color='primary' outline>
+                                    <Button onClick={handleRun} color='primary' outline>
                                         Chạy nuôi acc
                                     </Button>
                                 </CardBody>
