@@ -12,13 +12,7 @@ import { getAllData, getData } from "../store";
 import { useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
 import DataTable from "react-data-table-component";
-import {
-  ChevronDown,
-  Share,
-  Printer,
-  FileText,
-  Grid,
-} from "react-feather";
+import { ChevronDown, Share, Printer, FileText, Grid } from "react-feather";
 
 // ** Utils
 
@@ -45,7 +39,7 @@ import "@styles/react/libs/react-select/_react-select.scss";
 // eslint-disable-next-line import/no-unresolved
 import "@styles/react/libs/tables/react-dataTable-component.scss";
 // eslint-disable-next-line import/no-unresolved
-import { import_excel } from "@views/apps/user/store/index.js";
+import { import_excel, import_excel_proxy } from "@views/apps/user/store/index.js";
 
 // ** Table Header
 const CustomHeader = ({
@@ -333,9 +327,18 @@ const UsersList = () => {
     reader.readAsBinaryString(file);
   };
 
-  // useEffect(() => {
-  //   console.log("store data:", store.data);
-  // }, [store.data]);
+  const handleFileUploadProxy = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const workbook = XLSX.read(event.target.result, { type: "binary" });
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+      const data = XLSX.utils.sheet_to_json(worksheet);
+      console.log(data);
+      dispatch(import_excel_proxy(data));
+    };
+    reader.readAsBinaryString(file);
+  };
 
   return (
     <Fragment>
@@ -360,7 +363,7 @@ const UsersList = () => {
               <Label className="form-label" for="inputFileUser">
                 Upload proxy
               </Label>
-              <Input type="file" id="inputFileUser" name="fileInput" />
+              <Input   onChange={handleFileUploadProxy} type="file" id="inputFileUser" name="fileInput" />
             </Col>
             <Col md={8}></Col>
           </Row>

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default-member */
 import base from "./base";
 
 export function login(email, password) {
@@ -10,12 +11,13 @@ export function login(email, password) {
         });
 }
 
-export function register(name, email, password) {
-    return base.post('/register', {name, email, password})
+export function register(input_obj) {
+    return base.post('/register', input_obj)
         .then((response) => {
             return response.data;
         })
         .catch((error) => {
-            throw  error.response.data;
+            console.log(error)
+            throw  error;
         });
 }

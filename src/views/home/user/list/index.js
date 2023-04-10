@@ -15,16 +15,19 @@ import {User, UserPlus, UserCheck, UserX} from 'react-feather'
 import '@styles/react/apps/app-users.scss'
 import ProxyTable from "./TableProxy"
 import {useState} from "react";
+import { useSelector } from 'react-redux'
 
 
 const UsersList = () => {
-    const [proxyData, setProxyData] = useState([]);
+    const store = useSelector((state) => state.users);
     const [statsData, setStartsData] = useState([
         { color: 'primary', title: 'Tổng tài khoản', icon: <User size={20}/>, stat: '21,459' },
         { color: 'danger', title: 'Thêm mới', icon: <UserPlus size={20}/>, stat: '4,567' },
         { color: 'success', title: 'Đang hoạt động', icon: <UserCheck size={20}/>, stat: '19,860' },
         { color: 'warning', title: 'Bị khoá', icon: <UserX size={20}/>, stat: '237' }
     ]);
+
+
     return (
         <div className='app-user-list'>
             <Row>
@@ -68,7 +71,7 @@ const UsersList = () => {
                     </Row>
                 </Col>
                 <Col md={6}>
-                    <ProxyTable data={proxyData}></ProxyTable>
+                    <ProxyTable data={store.proxyData}></ProxyTable>
                 </Col>
             </Row>
             <Table/>

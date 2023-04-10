@@ -39,11 +39,18 @@ const AutoCommentPage = () => {
     repeatVal: 0,
   });
 
-  async function handle() {
+  const [commentContent, setCommentContent] = useState("");
+  const [pageUrl, setPageUrl] = useState("");
+
+  async function handleAutoComment() {
     console.log("run eel test!");
-    const res = await window.eel.get_options_value(optionsSt)();
+    const res = await window.eel.auto_comment({
+      page_url: pageUrl,
+      comment_content: commentContent
+    })();
     console.log(res);
   }
+  
 
   return (
     <Fragment>
@@ -56,15 +63,29 @@ const AutoCommentPage = () => {
             <Label md="12" xs="12">
               Nội dung bình luận
             </Label>
-            <Input type="textarea" style={{ minHeight: "70%" }} />
+            <Input
+              value={commentContent}
+              onChange={(e) => {
+                setCommentContent(e.target.value);
+              }}
+              type="textarea"
+              style={{ minHeight: "70%" }}
+            />
             <Label>
               Gợi ý: thêm {"{rrr}"} đầu nội dung để đăng tin ngẫu nhiên
             </Label>
             <Label>Hướng dẫn chèn Macro không giới hạn</Label>
             <Label>Link của bài viết:</Label>
             <div className="d-flex gap-1 align-items-center">
-              <Input bsSize="sm" placeholder="Đường link của bài viết" />
-              <Button onClick={handle} size="sm">
+              <Input
+                value={pageUrl}
+                onChange={(e) => {
+                  setPageUrl(e.target.value);
+                }}
+                bsSize="sm"
+                placeholder="Đường link của bài viết"
+              />
+              <Button onClick={handleAutoComment} size="sm">
                 Thêm
               </Button>
             </div>
@@ -180,7 +201,7 @@ const AutoCommentPage = () => {
                   <Label className="w-100">Dùng Browser</Label>
                 </div>
                 <Button
-                  onClick={handle}
+                 
                   className="d-flex justify-content-center"
                 >
                   Bắt đầu
