@@ -29,9 +29,13 @@ const ProxyTable = ({ data }) => {
         <Fragment>
             <div style={{ maxHeight: '500px' }} className={"mb-4"}>
              <BaseTable
+             data={data}
              columns={columns}
              title={"Proxy"}
              link={"/proxy"}
+             paginationPerPage={5}
+             paginationRowsPerPageOptions={[1, 3, 5]}
+             paginationTotalRows={data.length}
              ></BaseTable>
             </div>
         </Fragment>

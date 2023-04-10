@@ -19,7 +19,7 @@ const BaseTable = (props) => {
             <DataTable
                 title={props.title}
                 columns={props.columns}
-                data={data}
+                data={props.data}
                 sortIcon={<ChevronDown />}
                 className="react-dataTable"
                 pagination
@@ -36,7 +36,7 @@ const BaseTable = (props) => {
                 paginationServer={props.paginationServer}
                 paginationDefaultPage={props.paginationDefaultPage}
                 paginationResetDefaultPage={props.paginationResetDefaultPage}
-                paginationComponent={props.paginationComponent}
+                // paginationComponent={props.paginationComponent}
             />
         </Fragment>
     );

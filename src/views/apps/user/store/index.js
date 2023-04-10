@@ -51,12 +51,17 @@ export const appUsersSlice = createSlice({
     params: {},
     allData: [],
     selectedUser: null,
+    proxyData: [],
   },
   reducers: {
     import_excel: (state, action) => {
-      console.log("import excel:",action.payload);
+      console.log("import excel:", action.payload);
       state.data = action.payload;
-    }
+    },
+    import_excel_proxy: (state, action) => {
+      console.log("import excel proxy:", action.payload);
+      state.proxyData = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -74,6 +79,6 @@ export const appUsersSlice = createSlice({
   },
 });
 
-export const {import_excel} = appUsersSlice.actions;
+export const { import_excel, import_excel_proxy } = appUsersSlice.actions;
 
 export default appUsersSlice.reducer;
