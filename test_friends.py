@@ -6,13 +6,24 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import random
+import json
+
+class Person:
+    def __init__(self, name, other_info):
+        self.name = name
+        self.other_info = other_info
+    
+    def to_json(self):
+        return json.dumps(self.__dict__, ensure_ascii=False)
 
 
 class Friends:
-    def __init__(self, link):
+    def __init__(self, link, browser = False):
         options = Options()
-        # options.add_argument("--headless")
-        # options.add_argument('--disable-gpu')
+        if(browser == False):
+            options.add_argument("--headless")
+            
+        options.add_argument('--disable-gpu')
         service = Service(executable_path="./chromedriver")
         self.browser = webdriver.Chrome(service=service, options=options)
 
@@ -64,14 +75,21 @@ class Friends:
 
             self.browser.execute_script(
                 "window.scrollTo(0, document.body.scrollHeight);")
-            sleep(random.randint(10, 15))
+            sleep(random.randint(5, 10))
         friends = self.get_xpath_mul(
             "//div[@role='feed']/div[@class='x1yztbdb']")
+        
+        results = []  
 
-        for friend in friends:
+        for index,friend in enumerate(friends):
             name = friend.find_element(
                 By.CSS_SELECTOR, '[role="presentation"]').text
-            print(name)
+            other_info = friend.find_element(By.XPATH, f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div/div[1]/div[1]/div[2]/div/div/div/div/div/div[{index+1}]/div/div/div/div/div/div/div/div/div/div/div[2]/div[1]/div[1]/div/div[2]/span/span').text
+            person = Person(name, other_info).to_json()
+            results.append(person)
+            
+        return results
+            
 
     def search_friends_of_friend(self, name):
         search_input = self.get_xpath("//input[@aria-autocomplete='list']")
@@ -103,11 +121,17 @@ class Friends:
             sleep(random.randint(10, 15))
         friends = self.get_xpath_mul(
             "//div[@role='feed']/div[@class='x1yztbdb']")
+        
+        results = []        
 
-        for friend in friends:
+        for index,friend in enumerate(friends):
             name = friend.find_element(
                 By.CSS_SELECTOR, '[role="presentation"]').text
-            print(name)
+            other_info = friend.find_element(By.XPATH, f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div/div[1]/div[1]/div[2]/div/div/div/div/div/div[{index+1}]/div/div/div/div/div/div/div/div/div/div/div[2]/div[1]/div[1]/div/div[2]/span/span').text
+            person = Person(name, other_info).to_json()
+            results.append(person)
+        print(results)
+        return results
 
     def post_wall_friend(self, url, content = None, image = None):
         print("Post wall to friend")
@@ -134,7 +158,7 @@ class Friends:
         
 if __name__ == '__main__':
     friends = Friends("http://facebook.com")
-    # friends.search_friends_base_address("Hà Nội")
+    friends.search_friends_base_address("Hà Nội")
     # friends.search_friends_of_friend("an")
     # friends.post_wall_friend("https://www.facebook.com/thihang.phan.9212", "Hello world!")
-    friends.chat_friend("https://www.facebook.com/messages/t/100012135511720", "Xin chao")
+    # friends.chat_friend("https://www.facebook.com/messages/t/100012135511720", "Xin chao")
