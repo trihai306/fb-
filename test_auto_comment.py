@@ -25,6 +25,8 @@ browser.refresh()
 
 sleep(random.randint(5, 10))
 
+
+
 comment_content = browser.find_element(By.XPATH, '//div[@aria-label="Viết bình luận"]')
 input_comment = comment_content.find_element(By.XPATH, '//p')
 input_comment.send_keys("hello")

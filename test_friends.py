@@ -11,8 +11,8 @@ import random
 class Friends:
     def __init__(self, link):
         options = Options()
-        options.add_argument("--headless")
-        options.add_argument('--disable-gpu')
+        # options.add_argument("--headless")
+        # options.add_argument('--disable-gpu')
         service = Service(executable_path="./chromedriver")
         self.browser = webdriver.Chrome(service=service, options=options)
 
@@ -26,7 +26,7 @@ class Friends:
         # refresh brwoser
         self.browser.refresh()
 
-        sleep(random.randint(5, 10))
+        sleep(random.randint(3, 5))
 
     def get_xpath(self, content):
         return self.browser.find_element(By.XPATH, content)
@@ -109,7 +109,32 @@ class Friends:
                 By.CSS_SELECTOR, '[role="presentation"]').text
             print(name)
 
+    def post_wall_friend(self, url, content = None, image = None):
+        print("Post wall to friend")
+        print(content)
+        self.browser.get(url)
+        sleep(random.randint(3,5))
+        write_post = self.get_xpath("/html/body/div[1]/div/div[1]/div/div[3]/div/div/div/div[1]/div[1]/div/div/div[4]/div[2]/div/div[2]/div[1]/div/div/div/div/div[1]/div")
+        write_post.click()
+        sleep(random.randint(3,5))
+        content_form = self.get_xpath("/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[1]/div/div[2]/div/div/div/form/div/div[1]/div/div/div/div[2]/div[1]/div[1]/div[1]/div/div/div[1]/p")
+        content_form.send_keys(content)
+        sleep(random.randint(3,5))
+        post_btn = self.get_xpath("/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[1]/div/div[2]/div/div/div/form/div/div[1]/div/div/div/div[3]/div[2]")
+        post_btn.click()
+        
+    def chat_friend(self, url, content = None, image = None):
+        print("Chat Friend")
+        print(content)
+        self.browser.get(url)
+        sleep(random.randint(3,5))
+        message_content = self.get_xpath("/html/body/div[1]/div/div[1]/div/div[3]/div/div/div/div[1]/div[1]/div[2]/div/div/div/div/div/div/div[2]/div/div/div[2]/div/div/div[4]/div[2]/div/div/div[1]/p")
+        message_content.send_keys(content)
+        message_content.send_keys(Keys.ENTER)
+        
 if __name__ == '__main__':
     friends = Friends("http://facebook.com")
     # friends.search_friends_base_address("Hà Nội")
-    friends.search_friends_of_friend("an")
+    # friends.search_friends_of_friend("an")
+    # friends.post_wall_friend("https://www.facebook.com/thihang.phan.9212", "Hello world!")
+    friends.chat_friend("https://www.facebook.com/messages/t/100012135511720", "Xin chao")

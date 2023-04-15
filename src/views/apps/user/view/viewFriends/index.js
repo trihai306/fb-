@@ -68,7 +68,7 @@ const tabs = [
 ];
 
 const Page = () => {
-  const [active, setActive] = useState(tabs[7].key);
+  const [active, setActive] = useState(tabs[0].key);
 
   const toggle = (tab) => {
     if (active !== tab) {

@@ -6,6 +6,8 @@ import "flatpickr/dist/themes/material_green.css";
 import Options from "@views/apps/user/components/forms/Options.js";
 import FriendsTbl from "@views/apps/user/components/tables/FriendsTbl.js";
 import ManageTabStatus from "@views/apps/user/components/common/manageTabStatus.js";
+import InputNumber from "rc-input-number";
+import { Plus, Minus } from "react-feather";
 
 const mockData = [
   {
@@ -101,15 +103,15 @@ const ManageTabTane = () => {
                   <Label className="w-100">Dùng browser</Label>
                 </div>
                 <div className="form-check">
-                  <Input type="radio" />
+                  <Input type="checkbox" />
                   <Label className="w-100">Theo dõi</Label>
                 </div>
                 <div className="form-check">
-                  <Input type="radio" />
+                  <Input type="checkbox" />
                   <Label className="w-100">Bỏ theo dõi</Label>
                 </div>
                 <div className="form-check">
-                  <Input type="radio" />
+                  <Input type="checkbox" />
                   <Label className="w-100">Hủy kết bạn</Label>
                 </div>
                 <Button size="sm">Tiến hành</Button>
@@ -118,7 +120,7 @@ const ManageTabTane = () => {
 
             <Col md="9" xs="6">
               <Label>Tải dữ liệu của bạn bè</Label>
-              <div className="d-flex  align-items-center gap-1">
+              <div className="d-flex  align-items-center gap-1 mb-1">
                 <Label className="w-25">Thư mục</Label>
                 <Input
                   type="text"
@@ -130,37 +132,42 @@ const ManageTabTane = () => {
               <Row>
                 <Col md="4" xs="6">
                   <div className="form-check">
-                    <Input bsSize="sm" type="checkbox" />
+                    <Input type="checkbox" />
                     <Label>Ảnh đại diện</Label>
                   </div>
                 </Col>
                 <Col md="4" xs="6">
                   <div className="form-check">
-                    <Input bsSize="sm" type="checkbox" />
+                    <Input type="checkbox" />
                     <Label>Danh sách bạn bè</Label>
                   </div>
                 </Col>
                 <Col md="4" xs="6">
                   <div className="form-check">
-                    <Input bsSize="sm" type="checkbox" />
+                    <Input type="checkbox" />
                     <Label>Album ảnh</Label>
                   </div>
                 </Col>
                 <Col md="4" xs="6">
                   <div className="form-check">
-                    <Input bsSize="sm" type="checkbox" />
+                    <Input type="checkbox" />
                     <Label>Tin nhắn</Label>
                   </div>
                 </Col>
                 <Col md="4" xs="6">
                   <div className="form-check">
-                    <Input bsSize="sm" type="checkbox" />
+                    <Input type="checkbox" />
                     <Label>Giới hạn số lượng ảnh Album</Label>
                   </div>
                 </Col>
                 <Col md="4" xs="6">
-                  <div className="form-check">
-                    <Input bsSize="sm" type="number" />
+                  <div className="d-flex gap-1 align-items-center">
+                    <InputNumber
+                      min={0}
+                      defaultValue={0}
+                      upHandler={<Plus />}
+                      downHandler={<Minus />}
+                    />
                     <Label>ảnh</Label>
                   </div>
                 </Col>
