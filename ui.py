@@ -1,6 +1,7 @@
 import eel
 import sys
 from base import Facebook
+from test_friends import Friends
 
 @eel.expose
 def hello(x):
@@ -33,6 +34,16 @@ def auto_comment(options):
     facebook.auto_comment(options["page_url"], options["comment_content"])
     return "success"
 
+@eel.expose
+def search_friends_base_address(key, browser):
+    friends = Friends("http://facebook.com", browser)
+    return friends.search_friends_base_address(key)
+
+@eel.expose
+def search_friends_of_friends(key, browser):
+    friends = Friends("http://facebook.com", browser)
+    return friends.search_friends_of_friend(key)
+
 if __name__ == '__main__':
     if sys.argv[1] == '--develop':
         directory = 'src'
@@ -47,6 +58,6 @@ if __name__ == '__main__':
         eel.init(directory, ['.tsx', '.ts', '.jsx', '.js', '.html'])
 
         eel.start(page, mode=app, **eel_kwargs)
-    else:
+    if sys.argv[1] == '--prod':
         eel.init("dist")
         eel.start("index.html")

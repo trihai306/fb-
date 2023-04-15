@@ -17,10 +17,10 @@ browser.get("http://facebook.com")
 
 # 2. Try to login
 email_form = browser.find_element(By.ID, 'email')
-email_form.send_keys("0948281268")
+email_form.send_keys("") # emails
 
 password_form = browser.find_element(By.ID, "pass")
-password_form.send_keys("khoalatoiday")
+password_form.send_keys("") # password
 password_form.send_keys(Keys.ENTER)
 sleep(10)
 

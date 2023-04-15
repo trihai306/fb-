@@ -62,11 +62,75 @@ const ManageTabTane = () => {
     repeatVal: 0,
   });
 
+  const [searhcFr, setsearhcFr] = useState("");
+  const [searchFrOfFr, setSearchFrOfFr] = useState("");
+  const [friends, setFriends] = useState([]);
+
   return (
     <Fragment>
       <Row>
         <Col md="4" xs="12">
-          <FriendsTbl />
+          <FriendsTbl dataProps={friends} />
+          <div className="form-check d-flex align-items-center gap-1 mb-1 mt-1">
+            <Label className="w-100">Tìm bạn của bạn bè:</Label>
+            <Input
+              value={searchFrOfFr}
+              bsSize="sm"
+              type="text"
+              onChange={(e) => {
+                setSearchFrOfFr(e.target.value);
+              }}
+            />
+            <Button
+              onClick={async () => {
+                console.log("runn search friend of friends");
+                let friendsRes = await window.eel.search_friends_of_friends(
+                  searchFrOfFr, true
+                )();
+                friendsRes = friendsRes.map((item) => {
+                  const itemParse = JSON.parse(item);
+                  return {
+                    name: itemParse.name,
+                    other_info: itemParse.other_info,
+                  };
+                });
+                setFriends(friendsRes);
+              }}
+              size="sm"
+            >
+              Tìm
+            </Button>
+          </div>
+          <div className="form-check d-flex align-items-center gap-1">
+            <Label className="w-100">Tìm bạn bè dựa theo địa chỉ:</Label>
+            <Input
+              value={searhcFr}
+              bsSize="sm"
+              type="text"
+              onChange={(e) => {
+                setsearhcFr(e.target.value);
+              }}
+            />
+            <Button
+              onClick={async () => {
+                console.log("runn");
+                let friendsRes = await window.eel.search_friends_base_address(
+                  searhcFr, true
+                )();
+                friendsRes = friendsRes.map((item) => {
+                  const itemParse = JSON.parse(item);
+                  return {
+                    name: itemParse.name,
+                    other_info: itemParse.other_info,
+                  };
+                });
+                setFriends(friendsRes);
+              }}
+              size="sm"
+            >
+              Tìm
+            </Button>
+          </div>
         </Col>
 
         <Col md="1" xs="12"></Col>
