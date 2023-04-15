@@ -7,7 +7,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 # 1 . khai báo biến browser
 options = Options()
-options.add_argument("--headless--")  # prevent show mock browser
+# options.add_argument("--headless")  # prevent show mock browser
 
 service = Service(executable_path="./chromedriver")
 browser = webdriver.Chrome(service=service, options=options)

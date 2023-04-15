@@ -65,7 +65,7 @@ const headerTitles = [
 
 const TabsIcons = () => {
   // ** State
-  const [active, setActive] = useState(headerTitles[6].key);
+  const [active, setActive] = useState(headerTitles[1].key);
 
   const toggle = (tab) => {
     if (active !== tab) {

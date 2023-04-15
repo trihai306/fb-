@@ -1,6 +1,6 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable no-tabs */
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Row, Col, Label, Button, Input, Progress } from "reactstrap";
 
 import Select from "react-select";
@@ -50,6 +50,11 @@ const AutoCommentPage = () => {
     })();
     console.log(res);
   }
+
+
+  useEffect(() => {
+    
+  },[])
   
 
   return (
@@ -136,7 +141,7 @@ const AutoCommentPage = () => {
           <Row>
             <Col md="12" sx="12">
               <Label md="12" xs="12">
-                Nội dung bình luận
+                Nhật ký bình luận
               </Label>
               <FriendsTbl />
             </Col>
