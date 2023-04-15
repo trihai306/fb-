@@ -1,13 +1,17 @@
 import axios from 'axios';
 
-const baseURL = 'http://localhost:8000';
+const baseURL = 'http://localhost:8001';
+const HEADERS = {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers':
+    'Origin, X-Requested-With, Content-Type, Accept',
+};
 
 const baseAPI = axios.create({
     baseURL: `${baseURL}/api`,
-    headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-    },
+    headers: HEADERS
 });
 
 // Thiết lập interceptor cho request trước khi được gửi đi
