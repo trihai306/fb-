@@ -315,16 +315,18 @@ const UsersList = () => {
   };
 
   const handleFileUpload = (event) => {
+    console.log("run")
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.onload = (event) => {
       const workbook = XLSX.read(event.target.result, { type: "binary" });
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const data = XLSX.utils.sheet_to_json(worksheet);
-      // console.log(data);
+      console.log("data excel:",data);
       dispatch(import_excel(data));
     };
     reader.readAsBinaryString(file);
+    event.target.value = ''; 
   };
 
   const handleFileUploadProxy = (event) => {
@@ -335,9 +337,10 @@ const UsersList = () => {
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const data = XLSX.utils.sheet_to_json(worksheet);
       console.log(data);
-      dispatch(import_excel_proxy(data));
+      // dispatch(import_excel_proxy(data));
     };
     reader.readAsBinaryString(file);
+    event.target.value = ''; 
   };
 
   return (
@@ -353,9 +356,10 @@ const UsersList = () => {
                 upload tài khoản user
               </Label>
               <Input
-                onChange={handleFileUpload}
+                onChange={(e) => {
+                  handleFileUpload(e)
+                }}
                 type="file"
-                id="inputFileUser"
                 name="fileInput"
               />
             </Col>

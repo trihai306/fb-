@@ -275,11 +275,11 @@ async def main():
     # This is the main async function that will await the coroutine
     print('Starting coroutine')
     tool = FacebookTool(True)
-    # tool.search_phonebox_key("khoa",30)
+    tool.search_phonebox_key("khoa",30)
     # tool.search_groups("https://mbasic.facebook.com/groups/420893461836711/?refid=27&paipv=0&eav=Afbu02F9K8lSbzv4OkhKajvtSv2R1zNj7QUef3F4Jle9o81o7IIWZQSEUOA8Uaec_yU"
     #                    , "all", 30)
     # tool.crawl_profile("https://mbasic.facebook.com/glinhgettingglowingg?eav=AfbUX4pBT_iWACwZ2eEymPVzqOrWBq0OBr0haMc-KW-1qx6Y76OsLoN7NMMD1XVSUzQ&paipv=0")
-    tool.search_suggest_friend(30, 'hằng')
+    # tool.search_suggest_friend(30, 'hằng')
         
 asyncio.run(main())
     
