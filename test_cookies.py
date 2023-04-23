@@ -7,32 +7,60 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import random
 import sys
+import json
+import os
 
 def login(username, password):
-    # 1 . khai báo biến browser
     options = Options()
-    # options.add_argument("--headless")  # prevent show mock browser
-
     service = Service(executable_path="./chromedriver")
     browser = webdriver.Chrome(service=service, options=options)
-
-    # 1. Open Facebook
     browser.get("http://mbasic.facebook.com")
-
-    # 2. Try to login
     email_form = browser.find_element(By.ID, 'm_login_email')
     email_form.send_keys(username) # emails
-
     password_form = browser.find_element(By.ID, "password_input_with_placeholder").find_element(By.CSS_SELECTOR, 'input')
     password_form.send_keys(password) # password
     password_form.send_keys(Keys.ENTER)
-    sleep(random.randint(3,5))
+    
+    if 'login' in browser.current_url:
+        browser.close()
+        return 'UserName or password failed'
 
+    sleep(random.randint(1,3))
     ok_btn = browser.find_element(By.CSS_SELECTOR, 'form')
     ok_btn.click()
+    sleep(random.randint(1,3))
+    cookies_json = json.dumps(browser.get_cookies())
+    if os.path.exists("cookies.pkl"):
+        with open('cookies.pkl', 'rb') as f:
+            try:
+                cookies_data = pickle.load(f)
+            except EOFError:
+                cookies_data = []
+    else:
+        cookies_data = []
+    c_user = browser.get_cookie("c_user").get('value')
+    stop_flag = 0
+    for i, data in enumerate(cookies_data):
+        data_load = json.loads(data)
+        for obj in data_load:
+            if 'name' in obj and obj['name'] == 'c_user' and obj['value'] == c_user:
+                print("found it!")
+                cookies_data.pop(i)
+                cookies_data.insert(i, cookies_json)
+                stop_flag = 1
+                break
+        if stop_flag == 1:
+            break
+    if(stop_flag == 0):
+        cookies_data.append(cookies_json)
+      
+    with open('cookies.pkl', 'wb') as f:
+        pickle.dump(cookies_data, f)
+    return True
 
-    sleep(random.randint(3,5))
-
-    pickle.dump(browser.get_cookies(), open("my_cookies.pkl", "wb"))
-
-login(sys.argv[1], sys.argv[2])
+# login(sys.argv[1], sys.argv[2])
+# with open('cookies.pkl', 'rb') as f:
+#     datas = pickle.load(f)
+#     for data in datas:
+#         print(data)
+#         print("------------")
