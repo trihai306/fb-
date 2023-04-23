@@ -26,6 +26,7 @@ import "@styles/react/apps/app-users.scss";
 import ProxyTable from "./TableProxy";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { toast } from "react-hot-toast";
 
 const UsersList = () => {
   const store = useSelector((state) => state.users);
@@ -59,23 +60,18 @@ const UsersList = () => {
   const checkCookies = async () => {
     console.log(store.data);
     store.data.forEach(async (item) => {
-      if (window.eel.check_cookies_fe instanceof Function) {
-        console.log("check_cookies_fe is a function");
-        if (window.eel.check_cookies_fe() instanceof Promise) {
-          console.log("check_cookies_fe is an asynchronous function");
-        } else {
-          console.log("check_cookies_fe is not an asynchronous function");
-        }
-      } else {
-        console.log("check_cookies_fe is not a function");
+      try {
+        const res = await window.eel.check_cookies_fe(
+          item.cookies_cuser,
+          item.username,
+          item.password
+        )();
+        console.log(res);
+        toast.success(`Success check cookies of username ${item.username}`)
+      } catch (error) {
+        // console.log(error)
+        toast.error(error.errorText)
       }
-      console.log(item);
-      const res = await window.eel.check_cookies_fe(
-        item.cookies_xs,
-        item.username,
-        item.password
-      )();
-      console.log(res);
     });
   };
 

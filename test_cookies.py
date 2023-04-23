@@ -21,14 +21,17 @@ def login(username, password):
     password_form.send_keys(password) # password
     password_form.send_keys(Keys.ENTER)
     
-    if 'login' in browser.current_url:
-        browser.close()
-        return 'UserName or password failed'
-
-    sleep(random.randint(1,3))
+    sleep(random.randint(3,5))
+    
     ok_btn = browser.find_element(By.CSS_SELECTOR, 'form')
     ok_btn.click()
-    sleep(random.randint(1,3))
+    
+    sleep(random.randint(3,5))
+    
+    if 'login' in browser.current_url:
+        browser.close()
+        raise ValueError(f"Sai tài khoản hoặc mật khẩu của username: {username}") 
+
     cookies_json = json.dumps(browser.get_cookies())
     if os.path.exists("cookies.pkl"):
         with open('cookies.pkl', 'rb') as f:
@@ -56,7 +59,7 @@ def login(username, password):
       
     with open('cookies.pkl', 'wb') as f:
         pickle.dump(cookies_data, f)
-    return True
+    return c_user
 
 # login(sys.argv[1], sys.argv[2])
 # with open('cookies.pkl', 'rb') as f:
