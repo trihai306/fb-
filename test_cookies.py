@@ -56,7 +56,6 @@ def login(username, password):
             break
     if(stop_flag == 0):
         cookies_data.append(cookies_json)
-      
     with open('cookies.pkl', 'wb') as f:
         pickle.dump(cookies_data, f)
     return c_user

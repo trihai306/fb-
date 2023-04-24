@@ -7,6 +7,10 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import random
 import json
+from load_cookies import check_cookies
+import os
+import json
+import time
 
 class Person:
     def __init__(self, name, other_info):
@@ -18,26 +22,42 @@ class Person:
 
 
 class Friends:
-    def __init__(self, link, browser = False):
+    def __init__(self, link, cookies, openBrowser = False):
         options = Options()
-        if(browser == False):
+        if(openBrowser == False):
             options.add_argument("--headless")
             
         options.add_argument('--disable-gpu')
         service = Service(executable_path="./chromedriver")
         self.browser = webdriver.Chrome(service=service, options=options)
+        self.browser.get("http://mbasic.facebook.com")
 
-        self.browser.get(link)
-
-        # load cookies
-        cookies = pickle.load(open("my_cookies.pkl", "rb"))
-        for cookie in cookies:
-            self.browser.add_cookie(cookie)
-
-        # refresh brwoser
-        self.browser.refresh()
-
-        sleep(random.randint(3, 5))
+        if os.path.exists("cookies.pkl"):
+            with open('cookies.pkl', 'rb') as f:
+                try:
+                    cookies_data = pickle.load(f)
+                except EOFError:
+                    cookies_data = []
+        else:
+            cookies_data = []
+        
+        stop_flag = 0
+        for data in cookies_data:
+            data_load = json.loads(data)
+            for obj in data_load:
+                if 'name' in obj and obj['name'] == 'c_user' and obj['value'] == str(cookies):
+                    if obj['expiry'] <= int(time.time()):
+                        print("login")
+                    else:
+                        for cookie in data_load:
+                            self.browser.add_cookie(cookie)
+                        self.browser.refresh()    
+                    stop_flag = 1
+                    break
+            if(stop_flag == 1):
+                break 
+    
+        sleep(random.randint(3,5))
 
     def get_xpath(self, content):
         return self.browser.find_element(By.XPATH, content)
@@ -157,8 +177,12 @@ class Friends:
         message_content.send_keys(Keys.ENTER)
         
 if __name__ == '__main__':
-    friends = Friends("http://facebook.com")
-    friends.search_friends_base_address("Hà Nội")
+    friends = Friends("http://facebook.com", '100091345735868' ,True) # cuser cookies
+    # friends.search_friends_base_address("Hà Nội")
     # friends.search_friends_of_friend("an")
+    
+    # Đăng tường bạn bè
     # friends.post_wall_friend("https://www.facebook.com/thihang.phan.9212", "Hello world!")
-    # friends.chat_friend("https://www.facebook.com/messages/t/100012135511720", "Xin chao")
+    
+    # Nhắn tin bạn bè
+    friends.chat_friend("https://www.facebook.com/messages/t/100012135511720", "Xin chao")

@@ -6,6 +6,9 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import random
+import json
+import os
+import time
 
 options = Options()
 options.add_argument("--headless--")  # prevent show mock browser
@@ -15,12 +18,32 @@ browser = webdriver.Chrome(service=service, options=options)
 
 browser.get("http://facebook.com")
 
-# load cookies
-cookies = pickle.load(open("my_cookies.pkl", "rb"))
-for cookie in cookies:
-    browser.add_cookie(cookie)
-    
-# refresh brwoser
+if os.path.exists("cookies.pkl"):
+    with open('cookies.pkl', 'rb') as f:
+        try:
+            cookies_data = pickle.load(f)
+        except EOFError:
+            cookies_data = []
+else:
+    cookies_data = []
+
+stop_flag = 0
+for data in cookies_data:
+    data_load = json.loads(data)
+    for obj in data_load:
+        if 'name' in obj and obj['name'] == 'c_user' and obj['value'] == str("100091345735868"):
+            if obj['expiry'] <= int(time.time()):
+                print("login")
+            else:
+                for cookie in data_load:
+                    browser.add_cookie(cookie)
+                browser.refresh()    
+            stop_flag = 1
+            break
+    if(stop_flag == 1):
+        break 
+
+sleep(random.randint(3,5))
 browser.refresh()
 
 sleep(random.randint(5, 10))
@@ -44,12 +67,14 @@ sleep(random.randint(5, 10))
 
 content = browser.find_element(By.XPATH, '/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[1]/div/div[2]/div/div/div/form/div/div[1]/div/div/div/div[2]/div[1]/div[1]/div[1]/div/div/div/p')
 
-content.send_keys("xin chao toi la hang")
+content.send_keys("xin chao toi la hang 123")
 
 sleep(random.randint(5,10))
 
 post_btn = browser.find_element(By.XPATH, "/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[1]/div/div[2]/div/div/div/form/div/div[1]/div/div/div/div[3]/div[2]/div")
 
 post_btn.click()
+
+# auto post
 
 # browser.close()

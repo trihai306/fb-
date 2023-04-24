@@ -12,6 +12,7 @@ import {
   Button,
   Input,
   Label,
+  Spinner,
 } from "reactstrap";
 
 // ** Custom Components
@@ -25,11 +26,15 @@ import { User, UserPlus, UserCheck, UserX } from "react-feather";
 import "@styles/react/apps/app-users.scss";
 import ProxyTable from "./TableProxy";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
+// import { store } from "@store/store";
+import { update_cookies_all } from "@views/apps/user/store/index.js";
 
 const UsersList = () => {
+  const dispatch = useDispatch();
   const store = useSelector((state) => state.users);
+
   const [statsData, setStartsData] = useState([
     {
       color: "primary",
@@ -60,17 +65,22 @@ const UsersList = () => {
   const checkCookies = async () => {
     console.log(store.data);
     store.data.forEach(async (item) => {
+      console.log(item);
       try {
         const res = await window.eel.check_cookies_fe(
           item.cookies_cuser,
           item.username,
           item.password
         )();
-        console.log(res);
-        toast.success(`Success check cookies of username ${item.username}`)
+        dispatch(
+          update_cookies_all({
+            username: item.username,
+            cookies: res,
+          })
+        );
+        toast.success(`Success check cookies of username ${item.username}`);
       } catch (error) {
-        // console.log(error)
-        toast.error(error.errorText)
+        toast.error(error.errorText);
       }
     });
   };
@@ -115,7 +125,17 @@ const UsersList = () => {
                       </Col>
                     </Row>
                   </CardText>
-                  <Button onClick={checkCookies} color="primary" outline>
+                  <Button
+                    onClick={async () => {
+                      if (store.data.length > 0) {
+                        await checkCookies();
+                      } else {
+                        toast.error("Không có dữ liệu kiểm tra!");
+                      }
+                    }}
+                    color="primary"
+                    outline
+                  >
                     Kiểm tra cookies
                   </Button>
                 </CardBody>

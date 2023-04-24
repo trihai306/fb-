@@ -47,9 +47,9 @@ def check_cookies(cookies_cuser, username = '', password = ''):
                 break
         if(stop_flag == 1):
             break 
-   
+    c_user = browser.get_cookie("c_user").get('value')
     sleep(random.randint(3,5))
-    return True
+    return c_user
 
 # check_cookies(sys.argv[1])
 # browser.close()
