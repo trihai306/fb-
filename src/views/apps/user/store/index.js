@@ -21,7 +21,7 @@ export const getData = createAsyncThunk("appUsers/getData", async (params) => {
 export const getUser = createAsyncThunk("appUsers/getUser", async (id) => {
   // const response = await axios.get("/api/users/user", { id });
   // return response.data.user;
-  return null
+  return null;
 });
 
 export const addUser = createAsyncThunk(
@@ -53,6 +53,8 @@ export const appUsersSlice = createSlice({
     allData: [],
     selectedUser: null,
     proxyData: [],
+    current_cookies: null,
+    cookies_all: [],
   },
   reducers: {
     import_excel: (state, action) => {
@@ -63,6 +65,18 @@ export const appUsersSlice = createSlice({
       console.log("import excel proxy:", action.payload);
       state.proxyData = action.payload;
     },
+
+    update_cookies: (state, action) => {
+      console.log(action.payload)
+      state.current_cookies = action.payload;
+    },
+    update_cookies_all: (state, action) => {
+      console.log(action.payload)
+      const cookies = state.cookies_all.find((item) => item.username === action.payload.username)
+      if (!cookies) {
+        state.cookies_all = [...state.cookies_all, action.payload]
+      }
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -80,6 +94,7 @@ export const appUsersSlice = createSlice({
   },
 });
 
-export const { import_excel, import_excel_proxy } = appUsersSlice.actions;
+export const { import_excel, import_excel_proxy, update_cookies, update_cookies_all } =
+  appUsersSlice.actions;
 
 export default appUsersSlice.reducer;

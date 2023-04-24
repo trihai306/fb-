@@ -1,13 +1,15 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable no-tabs */
 import { Fragment, useState } from "react";
-import { Row, Col, Label, Button, Input, Progress } from "reactstrap";
+import { Row, Col, Label, Button, Input, Progress, Spinner } from "reactstrap";
 import "flatpickr/dist/themes/material_green.css";
 import Options from "@views/apps/user/components/forms/Options.js";
 import FriendsTbl from "@views/apps/user/components/tables/FriendsTbl.js";
 import ManageTabStatus from "@views/apps/user/components/common/manageTabStatus.js";
 import InputNumber from "rc-input-number";
 import { Plus, Minus } from "react-feather";
+import { useSelector } from "react-redux";
+import { toast } from "react-hot-toast";
 
 const mockData = [
   {
@@ -62,80 +64,114 @@ const ManageTabTane = () => {
     repeatVal: 0,
   });
 
-  const [searhcFr, setsearhcFr] = useState("");
-  const [searchFrOfFr, setSearchFrOfFr] = useState("");
+  const store = useSelector((state) => state.users);
+
+  const [searhcFr, setsearhcFr] = useState({
+    keyword: "",
+    nums: 5,
+    openBrowser: false,
+    loading: false,
+  });
   const [friends, setFriends] = useState([]);
 
   return (
     <Fragment>
       <Row>
-        <Col md="4" xs="12">
+        <Col md="6" xs="12">
           <FriendsTbl dataProps={friends} />
-          <div className="form-check d-flex align-items-center gap-1 mb-1 mt-1">
-            <Label className="w-100">Tìm bạn của bạn bè:</Label>
-            <Input
-              value={searchFrOfFr}
-              bsSize="sm"
-              type="text"
-              onChange={(e) => {
-                setSearchFrOfFr(e.target.value);
+          <div className="form-check d-flex align-items-center gap-1 mt-1">
+            <Label>Tìm bạn bè gợi ý theo từ khóa</Label>
+            <div>
+              <Input
+                value={searhcFr.keyword}
+                bsSize="sm"
+                type="text"
+                onChange={(e) => {
+                  setsearhcFr({
+                    ...searhcFr,
+                    keyword: e.target.value,
+                  });
+                }}
+              />
+            </div>
+            <InputNumber
+              min={1}
+              defaultValue={searhcFr.nums}
+              upHandler={<Plus />}
+              downHandler={<Minus />}
+              onChange={(nums) => {
+                setsearhcFr({
+                  ...searhcFr,
+                  nums,
+                });
               }}
             />
+            <div className="form-check">
+              <Input
+                type="checkbox"
+                defaultChecked={searhcFr.openBrowser}
+                onChange={(e) => {
+                  setsearhcFr({
+                    ...searhcFr,
+                    openBrowser: e.target.checked,
+                  });
+                }}
+              />
+              <Label className="w-100">Dùng browser</Label>
+            </div>
             <Button
               onClick={async () => {
-                console.log("runn search friend of friends");
-                let friendsRes = await window.eel.search_friends_of_friends(
-                  searchFrOfFr, true
-                )();
-                friendsRes = friendsRes.map((item) => {
-                  const itemParse = JSON.parse(item);
-                  return {
-                    name: itemParse.name,
-                    other_info: itemParse.other_info,
-                  };
+                setsearhcFr({
+                  ...searhcFr,
+                  loading: true,
                 });
-                setFriends(friendsRes);
+                if (store.current_cookies) {
+                  let friendsRes = await window.eel.search_suggest_friend(
+                    {
+                      cookies: store.current_cookies,
+                      openBrowser: searhcFr.openBrowser,
+                    },
+                    searhcFr.keyword,
+                    searhcFr.nums
+                  )();
+                  friendsRes = friendsRes.map((item) => {
+                    const itemParse = JSON.parse(item);
+                    const keys = Object.keys(itemParse);
+
+                    keys.forEach((key) => {
+                      if (Array.isArray(itemParse[key])) {
+                        const myString = itemParse[key].join(", ");
+                        itemParse[key] = myString;
+                      } else {
+                        if (typeof itemParse[key] !== "string") {
+                          const myString = Object.entries(itemParse[key])
+                            .map(([key, value]) => `${key}:${value}`)
+                            .join(", ");
+                          itemParse[key] = myString;
+                        }
+                      }
+                    });
+                    return itemParse;
+                  });
+                  setFriends(friendsRes);
+                } else {
+                  toast.error("Đề nghị chọn tài khoản crawl");
+                }
+                setsearhcFr({
+                  ...searhcFr,
+                  loading: false,
+                });
               }}
               size="sm"
             >
-              Tìm
-            </Button>
-          </div>
-          <div className="form-check d-flex align-items-center gap-1">
-            <Label className="w-100">Tìm bạn bè dựa theo địa chỉ:</Label>
-            <Input
-              value={searhcFr}
-              bsSize="sm"
-              type="text"
-              onChange={(e) => {
-                setsearhcFr(e.target.value);
-              }}
-            />
-            <Button
-              onClick={async () => {
-                console.log("runn");
-                let friendsRes = await window.eel.search_friends_base_address(
-                  searhcFr, true
-                )();
-                friendsRes = friendsRes.map((item) => {
-                  const itemParse = JSON.parse(item);
-                  return {
-                    name: itemParse.name,
-                    other_info: itemParse.other_info,
-                  };
-                });
-                setFriends(friendsRes);
-              }}
-              size="sm"
-            >
-              Tìm
+              {searhcFr.loading ? <Spinner size="sm" color="light" /> : "Tìm"}
             </Button>
           </div>
         </Col>
 
-        <Col md="1" xs="12"></Col>
+        {/* <Col md="1" xs="12"></Col> */}
 
-        <Col md="7" xs="12">
+        <Col md="6" xs="12">
           <Row>
             <Col md="3" xs="6">
               <Label>Hành động</Label>

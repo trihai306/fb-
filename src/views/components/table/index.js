@@ -1,6 +1,8 @@
-import { Row} from "reactstrap"
-import ReactPaginate from 'react-paginate'
-import DataTable from 'react-data-table-component'
+import { Button, Row } from "reactstrap";
+import ReactPaginate from "react-paginate";
+import DataTable from "react-data-table-component";
+import { downloadExcel } from "../../../utility/excel.js";
+import { toast } from "react-hot-toast";
 
 const TableCommon = ({
   className,
@@ -10,7 +12,6 @@ const TableCommon = ({
   handlePagination,
   RECORDS_PER_PAGE,
 }) => {
-
   const CustomPagination = () => (
     <ReactPaginate
       previousLabel={""}
@@ -34,10 +35,25 @@ const TableCommon = ({
         "pagination react-paginate separated-pagination pagination-sm justify-content-end pe-1 mt-1"
       }
     />
-  )
+  );
 
   return (
     <Row className={`react-dataTable ${className}`}>
+      <div className="d-flex align-items-center mb-1">
+        <Button
+          onClick={() => {
+            if (data.length > 0) {
+              downloadExcel("Example", data);
+            } else {
+              toast.error("Không có dữ liệu để tải!")
+            }
+          }}
+          className="btn btn-sm "
+          size="sm"
+        >
+          Tải Excel
+        </Button>
+      </div>
       <DataTable
         noHeader
         pagination
@@ -50,7 +66,7 @@ const TableCommon = ({
         data={data}
       />
     </Row>
-  )
-}
+  );
+};
 
-export default TableCommon
+export default TableCommon;

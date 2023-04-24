@@ -10,10 +10,31 @@ import random
 import json
 import asyncio
 import tracemalloc
+from load_cookies import check_cookies
+import os
+import time
 
+class Profile: 
+    def __init__(self):
+        self.name = None
+        self.living = {}
+        self.education = []
+        self.work = []
+        self.contactInfo = {}
+        self.basicInfo = {}
+        self.nicknames ={}
+        self.relationship = {}
+        self.family = {}
+        self.bio = {}
+        self.yearOverviews ={}
+        self.quote = {}
+    def to_json(self):
+        return json.dumps(self.__dict__, ensure_ascii=False)
+        
+        
 
 class FacebookTool:
-    def __init__(self, openBrowser = False):
+    def __init__(self, cookies, openBrowser = False):
         options = Options()
         if(openBrowser == False):
             options.add_argument("--headless")
@@ -23,18 +44,38 @@ class FacebookTool:
         self.browser = webdriver.Chrome(service=service, options=options)
         self.browser.get("http://mbasic.facebook.com")
 
-        cookies = pickle.load(open("my_cookies.pkl", "rb"))
-        for cookie in cookies:
-            self.browser.add_cookie(cookie)
-
-        self.browser.refresh()
-
-        sleep(random.randint(3, 5))
+        if os.path.exists("cookies.pkl"):
+            with open('cookies.pkl', 'rb') as f:
+                try:
+                    cookies_data = pickle.load(f)
+                except EOFError:
+                    cookies_data = []
+        else:
+            cookies_data = []
+        
+        stop_flag = 0
+        for data in cookies_data:
+            data_load = json.loads(data)
+            for obj in data_load:
+                if 'name' in obj and obj['name'] == 'c_user' and obj['value'] == str(cookies):
+                    if obj['expiry'] <= int(time.time()):
+                        print("login")
+                    else:
+                        for cookie in data_load:
+                            self.browser.add_cookie(cookie)
+                        self.browser.refresh()    
+                    stop_flag = 1
+                    break
+            if(stop_flag == 1):
+                break 
+    
+        sleep(random.randint(3,5))
         
     def open_tab(self, url):
         self.browser.execute_script("window.open(arguments[0],'_blank');", url)
         
     def crawl_profile(self,link, makeFriend=True):
+        profile = Profile()
         if(makeFriend == False):
             self.browser.get(link)
             sleep(random.randint(1,3))
@@ -45,32 +86,32 @@ class FacebookTool:
             self.browser.get(link)
         sleep(random.randint(1,3))
         try:
-            print("name is " + self.browser.find_element(By.ID, 'm-timeline-cover-section').find_element(By.TAG_NAME,'strong').text)
+            profile.name = self.browser.find_element(By.ID, 'm-timeline-cover-section').find_element(By.TAG_NAME,'strong').text
             introduce_btn = self.browser.find_element(By.ID, 'm-timeline-cover-section').find_element(By.XPATH, "./div[last()]/a[1]")
             introduce_btn.click()
             sleep(random.randint(1,3))
         except NoSuchElementException:
             print("it's not your friend!")
-            print("name is " + self.browser.find_element(By.ID, 'objects_container').find_element(By.TAG_NAME,'strong').text)
+            profile.name = self.browser.find_element(By.ID, 'objects_container').find_element(By.TAG_NAME,'strong').text
         try:
             education = self.browser.find_element(By.ID, 'education').find_elements(By.XPATH, "./div/div/div")
             print(self.browser.find_element(By.ID, 'education').find_element(By.TAG_NAME, 'header').text)
             for item in education:
-                print(item.find_element(By.XPATH,'./div/div[1]/div[1]//span').text) 
+                profile.education.append(item.find_element(By.XPATH,'./div/div[1]/div[1]//span').text)
         except:
             print("no info about education")
         try:
             work = self.browser.find_element(By.ID, 'work').find_elements(By.XPATH, "./div/div/div")
             print(self.browser.find_element(By.ID, 'work').find_element(By.TAG_NAME, 'header').text)
             for item in work:
-                print(item.find_element(By.XPATH, "./div/div[1]/div[1]/span").text)
+                profile.work.append(item.find_element(By.XPATH, "./div/div[1]/div[1]/span").text)
         except:
             print("no info about works")
         try:
             living = self.browser.find_element(By.ID, 'living').find_elements(By.XPATH, "./div/div//table")
             print(self.browser.find_element(By.ID, 'living').find_element(By.TAG_NAME, 'header').text)
             for item in living:
-                print(item.find_element(By.XPATH, ".//td[1]").text + '-' + item.find_element(By.XPATH, './/td[2]').text)
+                profile.living[item.find_element(By.XPATH, ".//td[1]").text] = item.find_element(By.XPATH, './/td[2]').text
         except:
             print("no info about living")
         
@@ -78,7 +119,7 @@ class FacebookTool:
             contactInfo = self.browser.find_element(By.ID, 'contact-info').find_elements(By.XPATH, "./div/div//table")
             print(self.browser.find_element(By.ID, 'contact-info').find_element(By.TAG_NAME, 'header').text)
             for item in contactInfo:
-                print(item.find_element(By.XPATH, ".//td[1]").text + '-' + item.find_element(By.XPATH, './/td[2]').text)
+                profile.contactInfo[item.find_element(By.XPATH, ".//td[1]").text] =  item.find_element(By.XPATH, './/td[2]').text
         except:
             print('No info about contract info')
         
@@ -86,7 +127,7 @@ class FacebookTool:
             basicInfo = self.browser.find_element(By.ID, 'basic-info').find_elements(By.XPATH, "./div/div//table")
             print(self.browser.find_element(By.ID, 'basic-info').find_element(By.TAG_NAME, 'header').text)
             for item in basicInfo:
-                print(item.find_element(By.XPATH, ".//td[1]").text + '-' + item.find_element(By.XPATH, './/td[2]').text)
+                profile.basicInfo[item.find_element(By.XPATH, ".//td[1]").text] = item.find_element(By.XPATH, './/td[2]').text
         except:
             print('No info about basic info')
         
@@ -94,7 +135,7 @@ class FacebookTool:
             nicknames = self.browser.find_element(By.ID, 'nicknames').find_elements(By.XPATH, "./div/div//table")
             print(self.browser.find_element(By.ID, 'nicknames').find_element(By.TAG_NAME, 'header').text)
             for item in nicknames:
-                print(item.find_element(By.XPATH, ".//td[1]").text + '-' + item.find_element(By.XPATH, './/td[2]').text)
+                profile.nicknames[item.find_element(By.XPATH, ".//td[1]").text] = item.find_element(By.XPATH, './/td[2]').text
         except:
             print('No info about nicks name')
         
@@ -102,7 +143,7 @@ class FacebookTool:
             relationship = self.browser.find_element(By.ID, 'relationship').find_elements(By.XPATH, "./div/div//table")
             print(self.browser.find_element(By.ID, 'relationship').find_element(By.TAG_NAME, 'header').text)
             for item in relationship:
-                print(item.find_element(By.XPATH, ".//td[1]").text + '-' + item.find_element(By.XPATH, './/td[2]').text)
+                profile.relationship[item.find_element(By.XPATH, ".//td[1]").text] = item.find_element(By.XPATH, './/td[2]').text
         except:
             print('No info about relationship!')
         
@@ -110,7 +151,7 @@ class FacebookTool:
             family = self.browser.find_element(By.ID, 'family').find_elements(By.XPATH, "./div/div//table")
             print(self.browser.find_element(By.ID, 'family').find_element(By.TAG_NAME, 'header').text)
             for item in family:
-                print(item.find_element(By.XPATH, ".//td[1]").text + '-' + item.find_element(By.XPATH, './/td[2]').text)
+                profile.family[item.find_element(By.XPATH, ".//td[1]").text] = item.find_element(By.XPATH, './/td[2]').text
         except:
             print('No info about family!')
         
@@ -118,7 +159,7 @@ class FacebookTool:
             bio = self.browser.find_element(By.ID, 'bio').find_elements(By.XPATH, "./div/div//table")
             print(self.browser.find_element(By.ID, 'bio').find_element(By.TAG_NAME, 'header').text)
             for item in bio:
-                print(item.find_element(By.XPATH, ".//td[1]").text + '-' + item.find_element(By.XPATH, './/td[2]').text)
+                profile.bio[item.find_element(By.XPATH, ".//td[1]").text] = item.find_element(By.XPATH, './/td[2]').text
         except:
             print('No info about bio!')
         
@@ -126,7 +167,7 @@ class FacebookTool:
             yearOverviews = self.browser.find_element(By.ID, 'year-overviews').find_elements(By.XPATH, "./div/div//table")
             print(self.browser.find_element(By.ID, 'year-overviews').find_element(By.TAG_NAME, 'header').text)
             for item in yearOverviews:
-                print(item.find_element(By.XPATH, ".//td[1]").text + '-' + item.find_element(By.XPATH, './/td[2]').text)
+                profile.yearOverviews[item.find_element(By.XPATH, ".//td[1]").text] = item.find_element(By.XPATH, './/td[2]').text
         except:
             print('No info about year overviews')
         
@@ -134,11 +175,13 @@ class FacebookTool:
             quote = self.browser.find_element(By.ID, 'quote').find_elements(By.XPATH, "./div/div//table")
             print(self.browser.find_element(By.ID, 'quote').find_element(By.TAG_NAME, 'header').text)
             for item in quote:
-                print(item.find_element(By.XPATH, ".//td[1]").text + '-' + item.find_element(By.XPATH, './/td[2]').text)
+                profile.quote[item.find_element(By.XPATH, ".//td[1]").text] = item.find_element(By.XPATH, './/td[2]').text
         except:
             print('No info about quotes')
+        return profile.to_json()
     
     def search_phonebox_key(self,keyword, nums):
+        results_profiles = []
         search_input = self.browser.find_element(By.CSS_SELECTOR, 'input[name="query"]:first-of-type')
         search_input.send_keys(keyword) 
         search_input.send_keys(Keys.ENTER)
@@ -160,7 +203,8 @@ class FacebookTool:
             for item in res_li:
                 profile_links.append(item.find_element(By.TAG_NAME, 'a').get_attribute("href"))
             for link in profile_links:
-                self.crawl_profile(link)
+                profile = self.crawl_profile(link)
+                results_profiles.append(profile)
                 count += 1
                 print(f"count = {count} done")
                 print('-------------------')
@@ -178,10 +222,13 @@ class FacebookTool:
             except:
                 print('No at all')
         print("crawl done!")
+        return results_profiles
         
     def search_groups(self, link, options, nums):
         self.browser.get(link)
         sleep(random.randint(3,5))
+        
+        results_profiles = []
 
         root = self.browser.find_element(By.ID, 'root') 
         member = root.find_element(By.XPATH, "./div[1]/header/table/tbody/tr/td[2]")
@@ -211,7 +258,8 @@ class FacebookTool:
             for item in results:
                 profile_links.append(item.find_element(By.TAG_NAME, 'a').get_attribute("href"))
             for link in profile_links:
-                self.crawl_profile(link, false)
+                profile = self.crawl_profile(link)
+                results_profiles.append(profile)
                 count += 1
                 print(f"count = {count} done")
                 print('-------------------')
@@ -228,9 +276,10 @@ class FacebookTool:
             except:
                 break
                 print('Already out of members')
-        print("crawl done!")
+        return results_profiles
      
-    def search_suggest_friend(self, nums, keywords):
+    def search_suggest_friend(self, keywords, nums):
+        results_profiles = []
         header = self.browser.find_element(By.ID, 'header')
         friends_a = header.find_element(By.XPATH,'./nav/a[6]')
         friends_a.click()
@@ -249,7 +298,8 @@ class FacebookTool:
                 profile_links.append(item.find_element(By.TAG_NAME, 'a').get_attribute("href"))
 
             for link in profile_links:
-                self.crawl_profile(link, False)
+                profile = self.crawl_profile(link, False)
+                results_profiles.append(profile)
                 count += 1
                 print(f"count = {count} done")
                 print('-------------------')
@@ -269,17 +319,25 @@ class FacebookTool:
                 print('Already out of members')
                 break
         print("crawl done!")
+        # for profile in results_profiles:
+        #     print(profile.living)
+        return results_profiles
         
 
-async def main():
-    # This is the main async function that will await the coroutine
-    print('Starting coroutine')
-    tool = FacebookTool(True)
-    tool.search_phonebox_key("khoa",30)
-    # tool.search_groups("https://mbasic.facebook.com/groups/420893461836711/?refid=27&paipv=0&eav=Afbu02F9K8lSbzv4OkhKajvtSv2R1zNj7QUef3F4Jle9o81o7IIWZQSEUOA8Uaec_yU"
-    #                    , "all", 30)
-    # tool.crawl_profile("https://mbasic.facebook.com/glinhgettingglowingg?eav=AfbUX4pBT_iWACwZ2eEymPVzqOrWBq0OBr0haMc-KW-1qx6Y76OsLoN7NMMD1XVSUzQ&paipv=0")
-    # tool.search_suggest_friend(30, 'hằng')
+# async def main():
+#     print('Starting coroutine')
+#     tool = FacebookTool('100027475503280' ,True)
+    
+#     # Search danh bạ theo từ khóa
+#     # tool.search_phonebox_key("khoa",3)
+    
+#     # Search thành viên trong nhóm
+#     # tool.search_groups("https://mbasic.facebook.com/groups/420893461836711/?refid=27&paipv=0&eav=Afbu02F9K8lSbzv4OkhKajvtSv2R1zNj7QUef3F4Jle9o81o7IIWZQSEUOA8Uaec_yU"
+#     #                    , "all", 10)
+    
+#     # Search gợi ý bạn bè
+#     # tool.crawl_profile("https://mbasic.facebook.com/glinhgettingglowingg?eav=AfbUX4pBT_iWACwZ2eEymPVzqOrWBq0OBr0haMc-KW-1qx6Y76OsLoN7NMMD1XVSUzQ&paipv=0")
+#     tool.search_suggest_friend('hằng',3)
         
-asyncio.run(main())
+# asyncio.run(main())
     

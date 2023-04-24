@@ -30,13 +30,13 @@ showmore_link.click()
 
 sleep(random.randint(5,10))
 
-likes = driver.find_element(By.XPATH, "/html/body/div[1]/div/div[1]/div/div[3]/div/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[8]/div/div/div[4]/div/div/div[1]/div/div[1]/div/div[1]/div/span/div/span[1]/span/span")
+# likes = driver.find_element(By.XPATH, "/html/body/div[1]/div/div[1]/div/div[3]/div/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[8]/div/div/div[4]/div/div/div[1]/div/div[1]/div/div[1]/div/span/div/span[1]/span/span")
 
-print(likes.text)
+# print(likes.text)
 
-sleep(random.randint(5,10))
+# sleep(random.randint(5,10))
 comment_list = driver.find_elements(By.XPATH,"//div[@aria-label='Comment']")
-print(comment_list)
+# print(comment_list)
 
 # lặp trong tất cả comment và hiển thị nội dung
 for cmt in comment_list: 

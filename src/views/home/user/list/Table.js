@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
 import DataTable from "react-data-table-component";
 import { ChevronDown, Share, Printer, FileText, Grid } from "react-feather";
-
+import "../sass/style.scss";
 // ** Utils
 
 // ** Reactstrap Imports
@@ -39,7 +39,12 @@ import "@styles/react/libs/react-select/_react-select.scss";
 // eslint-disable-next-line import/no-unresolved
 import "@styles/react/libs/tables/react-dataTable-component.scss";
 // eslint-disable-next-line import/no-unresolved
-import { import_excel, import_excel_proxy } from "@views/apps/user/store/index.js";
+import {
+  import_excel,
+  import_excel_proxy,
+} from "@views/apps/user/store/index.js";
+
+import * as FileSaver from "file-saver";
 
 // ** Table Header
 const CustomHeader = ({
@@ -93,6 +98,18 @@ const CustomHeader = ({
     link.setAttribute("download", filename);
     link.click();
   }
+
+  function downloadExcel(fileName) {
+    const fileType =
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+    const fileExtension = ".xlsx";
+    const ws = XLSX.utils.json_to_sheet(store.data);
+    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const data = new Blob([excelBuffer], { type: fileType });
+    FileSaver.saveAs(data, fileName + fileExtension);
+  }
+
   return (
     <div className="invoice-list-table-header w-100 me-1 ms-50 mt-2 mb-75">
       <Row>
@@ -149,7 +166,12 @@ const CustomHeader = ({
                   <FileText className="font-small-4 me-50" />
                   <span className="align-middle">CSV</span>
                 </DropdownItem>
-                <DropdownItem className="w-100">
+                <DropdownItem
+                  onClick={() => {
+                    downloadExcel("example");
+                  }}
+                  className="w-100"
+                >
                   <Grid className="font-small-4 me-50" />
                   <span className="align-middle">Excel</span>
                 </DropdownItem>
@@ -315,18 +337,18 @@ const UsersList = () => {
   };
 
   const handleFileUpload = (event) => {
-    console.log("run")
+    console.log("run");
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.onload = (event) => {
       const workbook = XLSX.read(event.target.result, { type: "binary" });
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const data = XLSX.utils.sheet_to_json(worksheet);
-      console.log("data excel:",data);
+      console.log("data excel:", data);
       dispatch(import_excel(data));
     };
     reader.readAsBinaryString(file);
-    event.target.value = ''; 
+    event.target.value = "";
   };
 
   const handleFileUploadProxy = (event) => {
@@ -337,10 +359,10 @@ const UsersList = () => {
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const data = XLSX.utils.sheet_to_json(worksheet);
       console.log(data);
-      // dispatch(import_excel_proxy(data));
+      dispatch(import_excel_proxy(data));
     };
     reader.readAsBinaryString(file);
-    event.target.value = ''; 
+    event.target.value = "";
   };
 
   return (
@@ -357,7 +379,7 @@ const UsersList = () => {
               </Label>
               <Input
                 onChange={(e) => {
-                  handleFileUpload(e)
+                  handleFileUpload(e);
                 }}
                 type="file"
                 name="fileInput"
@@ -367,7 +389,12 @@ const UsersList = () => {
               <Label className="form-label" for="inputFileUser">
                 Upload proxy
               </Label>
-              <Input   onChange={handleFileUploadProxy} type="file" id="inputFileUser" name="fileInput" />
+              <Input
+                onChange={handleFileUploadProxy}
+                type="file"
+                id="inputFileUser"
+                name="fileInput"
+              />
             </Col>
             <Col md={8}></Col>
           </Row>
@@ -386,7 +413,7 @@ const UsersList = () => {
             columns={columns}
             onSort={handleSort}
             sortIcon={<ChevronDown />}
-            className="react-dataTable"
+            className="react-dataTable min_height_600"
             paginationComponent={CustomPagination}
             data={store.data}
             subHeaderComponent={

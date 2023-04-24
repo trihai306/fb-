@@ -1,13 +1,16 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable no-tabs */
 import { Fragment, useState } from "react";
-import { Row, Col, Label, Button, Input, Progress } from "reactstrap";
+import { Row, Col, Label, Button, Input, Progress, Spinner } from "reactstrap";
 import "flatpickr/dist/themes/material_green.css";
 import Options from "@views/apps/user/components/forms/Options.js";
 import FriendsTbl from "@views/apps/user/components/tables/FriendsTbl.js";
 import InputNumber from "rc-input-number";
 import { Plus, Minus } from "react-feather";
 import ManageTabStatus from "@views/apps/user/components/common/manageTabStatus.js";
+import { useSelector } from "react-redux";
+import { toast } from "react-hot-toast";
+import Select from "react-select";
 const mockData = [
   {
     title: "Tải dữ liệu của bạn bè",
@@ -60,16 +63,130 @@ const ManageTabTane = () => {
     repeatStatus: 0,
     repeatVal: 0,
   });
+  const store = useSelector((state) => state.users);
+
+  const [searhcFr, setsearhcFr] = useState({
+    link: "",
+    nums: 5,
+    options_pick: "all",
+    openBrowser: false,
+    loading: false,
+  });
+  const [friends, setFriends] = useState([]);
   return (
     <Fragment>
       <Row>
-        <Col md="4" xs="12">
-          <FriendsTbl />
+        <Col md="6" xs="12">
+          <FriendsTbl dataProps={friends} />
+          <div className="form-check d-flex align-items-center gap-1 mt-1">
+            <Label>Tìm thành viên trong nhóm</Label>
+            <div>
+              <Input
+                value={searhcFr.keyword}
+                bsSize="sm"
+                placeholder="đường link của nhóm"
+                type="text"
+                onChange={(e) => {
+                  setsearhcFr({
+                    ...searhcFr,
+                    link: e.target.value,
+                  });
+                }}
+              />
+            </div>
+            <InputNumber
+              min={1}
+              defaultValue={searhcFr.nums}
+              upHandler={<Plus />}
+              downHandler={<Minus />}
+              onChange={(nums) => {
+                setsearhcFr({
+                  ...searhcFr,
+                  nums,
+                });
+              }}
+            />
+            <div className="form-check">
+              <Input
+                type="checkbox"
+                defaultChecked={searhcFr.openBrowser}
+                onChange={(e) => {
+                  setsearhcFr({
+                    ...searhcFr,
+                    openBrowser: e.target.checked,
+                  });
+                }}
+              />
+              <Label className="w-100">Dùng browser</Label>
+            </div>
+
+            <Select
+              defaultValue={searhcFr.options_pick}
+              onChange={(newValue) => {
+                setsearhcFr({
+                  ...searhcFr,
+                  options_pick: newValue.value,
+                });
+              }}
+              options={[
+                { value: "all", label: "Tất cả" },
+                { value: "friends", label: "Bạn bè" },
+              ]}
+              className="react-select h-50"
+              classNamePrefix="select"
+            />
+            <Button
+              onClick={async () => {
+                setsearhcFr({
+                  ...searhcFr,
+                  loading: true,
+                });
+                if (store.current_cookies) {
+                  let friendsRes = await window.eel.search_groups(
+                    {
+                      cookies: store.current_cookies,
+                      openBrowser: searhcFr.openBrowser,
+                    },
+                    searhcFr.link,
+                    searhcFr.options_pick,
+                    searhcFr.nums
+                  )();
+                  friendsRes = friendsRes.map((item) => {
+                    const itemParse = JSON.parse(item);
+                    const keys = Object.keys(itemParse);
+
+                    keys.forEach((key) => {
+                      if (Array.isArray(itemParse[key])) {
+                        const myString = itemParse[key].join(", ");
+                        itemParse[key] = myString;
+                      } else {
+                        if (typeof itemParse[key] !== "string") {
+                          const myString = Object.entries(itemParse[key])
+                            .map(([key, value]) => `${key}:${value}`)
+                            .join(", ");
+                          itemParse[key] = myString;
+                        }
+                      }
+                    });
+                    return itemParse;
+                  });
+                  setFriends(friendsRes);
+                } else {
+                  toast.error("Đề nghị chọn tài khoản crawl");
+                }
+                setsearhcFr({
+                  ...searhcFr,
+                  loading: false,
+                });
+              }}
+              size="sm"
+            >
+              {searhcFr.loading ? <Spinner size="sm" color="light" /> : "Tìm"}
+            </Button>
+          </div>
         </Col>
 
-        <Col md="1" xs="12"></Col>
-
-        <Col md="7" xs="12">
+        <Col md="6" xs="12">
           <Row>
             <Col md="3" xs="6">
               <Label>Hành động</Label>

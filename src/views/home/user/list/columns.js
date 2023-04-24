@@ -28,6 +28,11 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
+import {
+  update_cookies,
+  update_cookies_all,
+} from "@views/apps/user/store/index.js";
+import { toast } from "react-hot-toast";
 
 // ** Renders User Columns
 const renderUser = (row) => {
@@ -36,7 +41,9 @@ const renderUser = (row) => {
       {row.avatar ? (
         <Avatar className="me-1" img={row.avatar} width="32" height="32" />
       ) : (
-        <div className="me-1">{row.fullname && row.fullname.charAt(0).toUpperCase()}</div>
+        <div className="me-1">
+          {row.fullname && row.fullname.charAt(0).toUpperCase()}
+        </div>
       )}
       <div className="d-flex flex-column">
         <Link
@@ -122,10 +129,36 @@ export const columns = [
           </DropdownToggle>
           <DropdownMenu>
             <DropdownItem
-              tag={Link}
+              // tag={Link}
               className="w-100"
-              to={`/apps/user/view/${row.id}`}
-              onClick={() => store.dispatch(getUser(row.id))}
+              // to={`/apps/user/view/${row.id}`}
+              onClick={async () => {
+                try {
+                  console.log(row);
+                  const cookies_all = store.getState("user").users.cookies_all;
+                  const cookies_cuser = cookies_all.find(
+                    (item) => item.username === row.username
+                  );
+                  if (!cookies_cuser) {
+                    const cuser = await window.eel.login_fe(
+                      row.username,
+                      row.password
+                    )();
+                    await store.dispatch(
+                      update_cookies_all({
+                        username: row.username,
+                        cookies: cuser,
+                      })
+                    );
+                    await store.dispatch(update_cookies(cuser));
+                  } else {
+                    await store.dispatch(update_cookies(cookies_cuser.cookies));
+                  }
+                  toast.success(`Chuyển đổi sang ${row.username} thành công!`);
+                } catch (error) {
+                  toast.error(`Chuyển đổi sang ${row.username} thất bại!`);
+                }
+              }}
             >
               <Play size={14} className="me-50" />
               <span className="align-middle">Chạy hoạt động</span>
