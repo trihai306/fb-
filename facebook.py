@@ -231,7 +231,10 @@ class FacebookTool:
         results_profiles = []
 
         root = self.browser.find_element(By.ID, 'root') 
-        member = root.find_element(By.XPATH, "./div[1]/header/table/tbody/tr/td[2]")
+        try:
+            member = root.find_element(By.XPATH, "./div[1]/header/table/tbody/tr/td[2]")
+        except:
+            raise ValueError("Tài khoản chưa tham gia nhóm")
         member.click()
         sleep(random.randint(3,5))
         root = self.browser.find_element(By.ID, 'root') 

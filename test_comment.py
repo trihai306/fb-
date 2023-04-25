@@ -5,47 +5,83 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import random
+import os
+import pickle
+import json
+import time
 
-# 1 . khai báo biến browser
-options = Options()
-options.add_argument("--headless--")  # prevent show mock browser
+def crawl_comment(link, nums): 
+    # 1 . khai báo biến browser
+    options = Options()
+    # options.add_argument("--headless")  # prevent show mock browser
+    
 
-service = Service(executable_path="./chromedriver")
-driver = webdriver.Chrome(service=service, options=options)
+    service = Service(executable_path="./chromedriver")
+    driver = webdriver.Chrome(service=service, options=options)
+    driver.get(link)
+    
+    sleep(random.randint(3,5))
+    
+    if os.path.exists("cookies.pkl"):
+        with open('cookies.pkl', 'rb') as f:
+            try:
+                cookies_data = pickle.load(f)
+            except EOFError:
+                cookies_data = []
+    else:
+        cookies_data = []
 
-# 2. Mở thử một trang web
-driver.get("https://www.facebook.com/aow.page/posts/pfbid02RxAPefPZE1C4jm3ByyWAJvvnDhqJPaupBsa9sYvdzyoUFHZypuDiKkdKXVj14mzxl?__cft__[0]=AZV759lgpbmZECVO6y6Yv7dkMTVkgQo5TN9rhG06tOZHFcHxqjhcyi30inJNPFUiyhE2hwZ3ofIPhCWyIRKMlzcYmDmIDYj0Fm2u4_OM6NEwTtRwg0ivy3sIi0Y9UyuCxXeOPYeTfrRrF7CUaCL8_3K_SgDqNrcGwWE5GZqj2IOWYILqImHVavP4-wmRBaH10QjJzTD4CBu_ulCCxlvpItDb&__tn__=%2CO%2CP-R")
+    stop_flag = 0
+    for data in cookies_data:
+        data_load = json.loads(data)
+        for obj in data_load:
+            if 'name' in obj and obj['name'] == 'c_user' and obj['value'] == str("100091345735868"):
+                if obj['expiry'] <= int(time.time()):
+                    print("login")
+                else:
+                    for cookie in data_load:
+                        driver.add_cookie(cookie)
+                    driver.refresh()    
+                stop_flag = 1
+                break
+        if(stop_flag == 1):
+            break 
 
-sleep(random.randint(5,10))
+    sleep(random.randint(3,5))
 
-showcomment_link = driver.find_element(By.XPATH, "/html/body/div[1]/div[2]/div[1]/div/div[2]/div[2]/div[2]/div[2]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[2]/form/div[2]/div[2]/div[1]/div/div[3]/span[1]/a")
-showcomment_link.click()
-# 3. Dừng chương trình 5 giây
+    # sleep(random.randint(3,5))
 
-sleep(random.randint(5,10))
+    # showcomment_link = driver.find_element(By.XPATH, "/html/body/div[1]/div[2]/div[1]/div/div[2]/div[2]/div[2]/div[2]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[2]/form/div[2]/div[2]/div[1]/div/div[3]/span[1]/a")
+    # showcomment_link.click()
+    # # 3. Dừng chương trình 5 giây
 
-# lấy comment. show more link
-showmore_link = driver.find_element(By.XPATH,"/html/body/div[1]/div[2]/div[1]/div/div[2]/div[2]/div[2]/div[2]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[2]/form/div[2]/div[3]/div[2]/div/a/div/span")
-showmore_link.click()
+    # sleep(random.randint(5,10))
 
-sleep(random.randint(5,10))
+    # # lấy comment. show more link
+    # showmore_link = driver.find_element(By.XPATH,"/html/body/div[1]/div[2]/div[1]/div/div[2]/div[2]/div[2]/div[2]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[2]/form/div[2]/div[3]/div[2]/div/a/div/span")
+    # showmore_link.click()
 
-# likes = driver.find_element(By.XPATH, "/html/body/div[1]/div/div[1]/div/div[3]/div/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[8]/div/div/div[4]/div/div/div[1]/div/div[1]/div/div[1]/div/span/div/span[1]/span/span")
+    # sleep(random.randint(5,10))
 
-# print(likes.text)
+    # # likes = driver.find_element(By.XPATH, "/html/body/div[1]/div/div[1]/div/div[3]/div/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[8]/div/div/div[4]/div/div/div[1]/div/div[1]/div/div[1]/div/span/div/span[1]/span/span")
 
-# sleep(random.randint(5,10))
-comment_list = driver.find_elements(By.XPATH,"//div[@aria-label='Comment']")
-# print(comment_list)
+    # # print(likes.text)
 
-# lặp trong tất cả comment và hiển thị nội dung
-for cmt in comment_list: 
-    # Hiển thị tên người và nội dung, cách nhau bởi dấu:
-    poster = cmt.find_element(By.CLASS_NAME, "_6qw4")
-    content = cmt.find_element(By.CLASS_NAME, "_3l3x") 
-    if(poster.text and content.text):
-        print("*",poster.text,":",content.text)
-        
-sleep(random.randint(5,10))
+    # # sleep(random.randint(5,10))
+    # comment_list = driver.find_elements(By.XPATH,"//div[@aria-label='Comment']")
+    # # print(comment_list)
 
-driver.close()
+    # # lặp trong tất cả comment và hiển thị nội dung
+    # for cmt in comment_list: 
+    #     # Hiển thị tên người và nội dung, cách nhau bởi dấu:
+    #     poster = cmt.find_element(By.CLASS_NAME, "_6qw4")
+    #     content = cmt.find_element(By.CLASS_NAME, "_3l3x") 
+    #     if(poster.text and content.text):
+    #         print("*",poster.text,":",content.text)
+            
+    # sleep(random.randint(5,10))
+
+    # driver.close()
+
+
+crawl_comment("https://mbasic.facebook.com/story.php?story_fbid=pfbid0XR6rTft6wFqnkHHRD7JJj5BXRSeCYRhtNCSJT3crCLaX4BELPJ2h69k2zsZ3EQgkl&id=112943320241635&eav=Afb2Ha3QW8HxUMxYq2w9dFLvJVaCMyFDrhuMX7XgDVPDNEQ15ZmUxNDn8yyAYL1Y4g4&refid=17&_ft_=qid.-4292872449082540587%3Amf_story_key.821230562746237%3Atop_level_post_id.821230562746237%3Atl_objid.821230562746237%3Acontent_owner_id_new.112943320241635%3Athrowback_story_fbid.821230562746237%3Apage_id.112943320241635%3Aphoto_id.821230532746240%3Astory_location.4%3Astory_attachment_style.photo%3Aott.ottAX9w2IT75hhnL9PD%3Asty.22%3Aent_attachement_type.MediaAttachment%3Aapp_id.121876164619130%3Apage_insights.%7B%22112943320241635%22%3A%7B%22page_id%22%3A112943320241635%2C%22page_id_type%22%3A%22page%22%2C%22actor_id%22%3A112943320241635%2C%22dm%22%3A%7B%22isShare%22%3A0%2C%22originalPostOwnerID%22%3A0%7D%2C%22psn%22%3A%22EntStatusCreationStory%22%2C%22post_context%22%3A%7B%22object_fbtype%22%3A266%2C%22publish_time%22%3A1682353423%2C%22story_name%22%3A%22EntStatusCreationStory%22%2C%22story_fbid%22%3A%5B821230562746237%5D%7D%2C%22role%22%3A1%2C%22sl%22%3A4%2C%22targets%22%3A%5B%7B%22actor_id%22%3A112943320241635%2C%22page_id%22%3A112943320241635%2C%22post_id%22%3A821230562746237%2C%22role%22%3A1%2C%22share_id%22%3A0%7D%5D%7D%7D%3Aprofile_id.112943320241635%3Aactrs.112943320241635%3Atds_flgs.3%3Athid.112943320241635%3A306061129499414%3A2%3A1682353423%3A1682353423%3A466142951010026955%3A%3A821230562746237%3Aftmd_400706.111111l&__tn__=%2AW-R&paipv=0#footer_action_list", 10)

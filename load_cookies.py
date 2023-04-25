@@ -24,6 +24,10 @@ def check_cookies(cookies_cuser, username = '', password = ''):
         cookies_data = []
         
     stop_flag = 0
+    ok_flag = 0
+    if(len(cookies_data) == 0):
+        return login(username, password)
+    
     for data in cookies_data:
         data_load = json.loads(data)
         for obj in data_load:
@@ -31,6 +35,7 @@ def check_cookies(cookies_cuser, username = '', password = ''):
                 if obj['expiry'] <= int(time.time()):
                     print("login")
                     login(username, password)
+                    ok_flag = 1
                 else:
                     print("Run cookies!")
                     options = Options()
@@ -42,11 +47,15 @@ def check_cookies(cookies_cuser, username = '', password = ''):
                     browser.get("http://mbasic.facebook.com")
                     for cookie in data_load:
                         browser.add_cookie(cookie)
+                    ok_flag = 1
                     browser.refresh()    
                 stop_flag = 1
                 break
         if(stop_flag == 1):
             break 
+    if ok_flag == 0:
+        return login(username, password)
+    
     c_user = browser.get_cookie("c_user").get('value')
     sleep(random.randint(3,5))
     return c_user
