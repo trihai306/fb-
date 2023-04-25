@@ -142,35 +142,39 @@ const ManageTabTane = () => {
                   loading: true,
                 });
                 if (store.current_cookies) {
-                  let friendsRes = await window.eel.search_groups(
-                    {
-                      cookies: store.current_cookies,
-                      openBrowser: searhcFr.openBrowser,
-                    },
-                    searhcFr.link,
-                    searhcFr.options_pick,
-                    searhcFr.nums
-                  )();
-                  friendsRes = friendsRes.map((item) => {
-                    const itemParse = JSON.parse(item);
-                    const keys = Object.keys(itemParse);
+                  try {
+                    let friendsRes = await window.eel.search_groups(
+                      {
+                        cookies: store.current_cookies,
+                        openBrowser: searhcFr.openBrowser,
+                      },
+                      searhcFr.link,
+                      searhcFr.options_pick,
+                      searhcFr.nums
+                    )();
+                    friendsRes = friendsRes.map((item) => {
+                      const itemParse = JSON.parse(item);
+                      const keys = Object.keys(itemParse);
 
-                    keys.forEach((key) => {
-                      if (Array.isArray(itemParse[key])) {
-                        const myString = itemParse[key].join(", ");
-                        itemParse[key] = myString;
-                      } else {
-                        if (typeof itemParse[key] !== "string") {
-                          const myString = Object.entries(itemParse[key])
-                            .map(([key, value]) => `${key}:${value}`)
-                            .join(", ");
+                      keys.forEach((key) => {
+                        if (Array.isArray(itemParse[key])) {
+                          const myString = itemParse[key].join(", ");
                           itemParse[key] = myString;
+                        } else {
+                          if (typeof itemParse[key] !== "string") {
+                            const myString = Object.entries(itemParse[key])
+                              .map(([key, value]) => `${key}:${value}`)
+                              .join(", ");
+                            itemParse[key] = myString;
+                          }
                         }
-                      }
+                      });
+                      return itemParse;
                     });
-                    return itemParse;
-                  });
-                  setFriends(friendsRes);
+                    setFriends(friendsRes);
+                  } catch (error) {
+                      toast.error(error.errorText)
+                  }
                 } else {
                   toast.error("Đề nghị chọn tài khoản crawl");
                 }
