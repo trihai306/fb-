@@ -41,7 +41,13 @@ def check_cookies(cookies_cuser, username = '', password = ''):
                     options = Options()
                     # options.add_argument("--headless")  # prevent show mock browser
 
-                    service = Service(executable_path="./chromedriver")
+                    # service = Service(executable_path="./chromedriver")
+                    if getattr(sys, 'frozen', False):
+                        base_path = sys._MEIPASS
+                    else:
+                        base_path = os.path.dirname(os.path.abspath(__file__))
+                    chromedriver_path = os.path.join(base_path, "chromedriver.exe")
+                    service = Service(executable_path=chromedriver_path)
                     browser = webdriver.Chrome(service=service, options=options)
                     
                     browser.get("http://mbasic.facebook.com")
