@@ -10,6 +10,7 @@ import json
 from load_cookies import check_cookies
 import os
 import json
+import sys
 import time
 
 class Person:
@@ -28,7 +29,13 @@ class Friends:
             options.add_argument("--headless")
             
         options.add_argument('--disable-gpu')
-        service = Service(executable_path="./chromedriver")
+        # service = Service(executable_path="./chromedriver")
+        if getattr(sys, 'frozen', False):
+            base_path = sys._MEIPASS
+        else:
+            base_path = os.path.dirname(os.path.abspath(__file__))
+        chromedriver_path = os.path.join(base_path, "chromedriver.exe")
+        service = Service(executable_path=chromedriver_path)
         self.browser = webdriver.Chrome(service=service, options=options)
         self.browser.get("http://mbasic.facebook.com")
 
